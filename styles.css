@@ -132,3 +132,52 @@ h1 {
     transform: translateY(-5px);
     box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
 }
+
+
+.service-grid {
+    display: grid;
+    /* 確保在大螢幕上是兩欄 */
+    grid-template-columns: repeat(2, 1fr); 
+    gap: 30px; 
+    margin-top: 30px;
+}
+
+.service-card {
+    /* 移除 option-button 的 100% 寬度，改用網格控制 */
+    background-color: var(--card-bg);
+    border: 2px solid #eee;
+    padding: 30px;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.service-card:hover {
+    border-color: var(--primary-color);
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.service-icon {
+    font-size: 3em;
+    color: var(--accent-color); /* 圖標使用強調色 */
+    margin-bottom: 10px;
+    display: block;
+}
+
+.card-title {
+    font-size: 1.15em;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin: 0;
+}
+
+/* 確保小螢幕上退回單欄 */
+@media (max-width: 600px) {
+    .service-grid {
+        grid-template-columns: 1fr;
+    }
+}
