@@ -68,6 +68,19 @@ h1 {
     box-shadow: 0 4px 15px rgba(255, 192, 0, 0.4);
 }
 
+/* service_menu.html 下方的返回按鈕修正 */
+.back-to-home-btn {
+    /* 覆蓋 option-button 在 grid 容器內的 100% 寬度 */
+    max-width: 400px; 
+    margin: 40px auto 0 auto !important; /* 置中並增加上方間距 */
+}
+
+/* 確保 general button 樣式不影響 a 標籤導覽卡片 */
+.option-button {
+    /* 保持寬度 100% 適用於非 grid 佈局 */
+    width: 100%; 
+}
+
 /* 訊息與結果區塊 */
 .alert-message {
     margin-top: 20px;
