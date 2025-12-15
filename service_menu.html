@@ -1,0 +1,29 @@
+<div class="container">
+    <h1>🏛 服務選單：日間部註冊組</h1>
+    <p>您好，已確認您的身份。請選擇您想查詢的服務項目：</p>
+    
+    <button class="option-button" onclick="navigate('document_apply.html')">
+        📄 申請文件類 (成績單、學位證明等)
+    </button>
+    
+    <button class="option-button" onclick="navigate('withdrawal_guide.html')">
+        ⏳ 休/退學與復學指引
+    </button>
+    
+    <button class="option-button" onclick="navigate('iccard_guide.html')">
+        💳 學生 IC 卡遺失/補發
+    </button>
+    
+    <button class="option-button" onclick="navigate('name_change_guide.html')">
+        ✏️ 更改姓名/地址申請
+    </button>
+
+    <div id="userInfo">
+        </div>
+</div>
+<script>
+    function navigate(url) {
+        // 實際應用中，可以將學號等參數帶到下一頁
+        window.location.href = url;
+    }
+</script>
