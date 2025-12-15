@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>文件申請查詢 - SSGS</title>
+    <style>
+        /* 基礎樣式 (省略，沿用 index.html 的 primary/accent color) */
+        
+        .document-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .document-card {
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 25px;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            text-align: center;
+        }
+
+        .document-card:hover {
+            border-color: var(--primary-color);
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .document-card h3 {
+            color: var(--primary-color);
+            margin-top: 0;
+        }
+        
+        /* Modal 彈出視窗樣式 */
+        .modal {
+            display: none; /* 預設隱藏 */
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.6); /* 黑色半透明背景 */
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto; /* 5% from the top and centered */
+            padding: 30px;
+            border: 1px solid #888;
+            width: 90%;
+            max-width: 700px;
+            border-radius: 10px;
+            position: relative;
+        }
+        
+        .close-btn {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            line-height: 1;
+        }
+
+        .close-btn:hover,
+        .close-btn:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        
+        .mail-rule-box {
+            background-color: #fffde7; /* 淺黃色警示 */
+            border: 2px solid var(--accent-color);
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 8px;
+        }
+        
+        .mail-rule-box h4 {
+            color: #b7a000;
+            margin-top: 0;
+            border-bottom: 1px dashed #ccc;
+            padding-bottom: 5px;
+        }
+        
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📄 流程 A：申請文件查詢</h1>
+        <p>請點擊您欲申請的文件，系統將顯示詳細的申請步驟、費用與郵寄規則。</p>
+        
+        <div class="document-grid">
+            <div class="document-card" onclick="showDocumentDetail('chinese_transcript')">
+                <h3>中文歷年成績單</h3>
+                <p>含排名 (推甄用成績單，班排或系排) 或不含排名。</p>
+            </div>
+            
+            <div class="document-card" onclick="showDocumentDetail('english_transcript')">
+                <h3>英文歷年成績單</h3>
+                <p>選擇彌封或不彌封。</p>
+            </div>
+            
+            <div class="document-card" onclick="showDocumentDetail('degree_copy')">
+                <h3>學位(畢業)證書影本</h3>
+                <p>需攜帶正本供註冊組影印並用印。</p>
+            </div>
+
+            <div class="document-card" onclick="showDocumentDetail('in_school')">
+                <h3>中文在學證明書</h3>
+                <p>已繳學雜費並且台銀顯示已銷帳者可至機台自行列印。</p>
+            </div>
+        </div>
+        
+    </div>
+
+    <div id="documentModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+            <h2 id="modalTitle" style="color: var(--primary-color);"></h2>
+            <div id="modalBody">
+                </div>
+            
+            <div class="mail-rule-box">
+                <h4>✉️ 郵寄申請共通規則 (適用此文件)</h4>
+                <ul>
+                    <li>必備：申請書、身分證正反面影印本。</li>
+                    <li>費用：請使用郵政匯票支付 (抬頭：國立臺中科技大學)。</li>
+                    <li>回件：請自附已貼足郵*的掛號回郵信封。</li>
+                    <li><strong style="color: red;">重要提醒：</strong> 中文學位證明書無法郵寄方式領取。</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 為了展示，這裡定義了文件的靜態資料 (實務上應從 JSON/DB 載入)
+        const documentData = {
+            chinese_transcript: {
+                title: "中文歷年成績單申請",
+                content: `
+                    <h4>步驟與注意事項：</h4>
+                    <ul>
+                        <li>**申請書：** 填寫《各項證明申請書》。</li>
+                        <li>**繳費：** 自動繳費機 ($10/份)。</li>
+                        <li>**推甄用 (含排名)：** 需至自動繳費機選擇「推甄用成績單」，**班排、系排需分開申請**。</li>
+                        <li>**等待時間：** 一般情況**立刻取件**。</li>
+                    </ul>
+                `
+            },
+            english_transcript: {
+                title: "英文歷年成績單申請",
+                content: `
+                    <h4>步驟與注意事項：</h4>
+                    <ul>
+                        <li>**申請書：** 填寫《各項證明申請書》。</li>
+                        <li>**費用：** $10/份。</li>
+                        <li>**必備資料：** 需檢附**護照影本**以確認英文姓名。</li>
+                        <li>**彌封：** 申請時須告知是否需要彌封。</li>
+                        <li>**等待時間：** 約 **3 天**工作天取件。</li>
+                    </ul>
+                `
+            },
+            degree_copy: {
+                title: "學位(畢業)證書影本申請",
+                content: `
+                    <h4>步驟與注意事項：</h4>
+                    <ul>
+                        <li>**申請書：** 填寫《各項證明申請書》。</li>
+                        <li>**必備資料：** 需攜帶**學位(畢業)證書正本**，由註冊組影印送文書組用印。</li>
+                        <li>**費用：** $10/份。</li>
+                        <li>**等待時間：** 半個工作日 (三民校區) / 一個工作日 (民生校區)。</li>
+                    </ul>
+                `
+            },
+            in_school: {
+                title: "中文在學證明書申請",
+                content: `
+                    <h4>步驟與注意事項：</h4>
+                    <ul>
+                        <li>**申請時機：** 須於學期學雜費已繳交且已銷帳後始可申請。</li>
+                        <li>**申請方式：** 可利用三民校區**自動繳費機**，繳費後即可**立即取件**。</li>
+                        <li>**紙本申請：** 亦可至註冊組先填表，再至出納組繳費後取件。</li>
+                        <li>**等待時間：** 立刻取件。</li>
+                    </ul>
+                `
+            }
+        };
+
+        function showDocumentDetail(key) {
+            const data = documentData[key];
+            if (!data) return;
+
+            document.getElementById('modalTitle').textContent = data.title;
+            document.getElementById('modalBody').innerHTML = data.content;
+            document.getElementById('documentModal').style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('documentModal').style.display = 'none';
+        }
+
+        // 點擊 Modal 外側關閉視窗
+        window.onclick = function(event) {
+            const modal = document.getElementById('documentModal');
+            if (event.target == modal) {
+                closeModal();
+            }
+        }
+    </script>
+</body>
+</html>
