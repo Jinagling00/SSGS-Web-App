@@ -123,7 +123,7 @@ function checkStudentId() {
                 break;
         }
         
-        const message = `本系統為日間部註冊組專用 (學號1開頭)。您的學號開頭為 ${firstDigit}，/n請聯絡：${contactInfo}。`;
+        const message = `本系統為日間部註冊組專用 (學號1開頭)。您的學號開頭為 ${firstDigit}，請聯絡：${contactInfo}。`;
         displayMessage('alert-error', message);
         
     } else {
