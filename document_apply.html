@@ -22,7 +22,7 @@
     </style>
 </head>
 <body>
-    <div class="container">
+    <div class="container"> 
         <h1>📄 流程 A：申請文件查詢</h1>
         <p>所有文件申請請使用**《日間部註冊組各項證明申請書》**。請點擊卡片查看詳細步驟。</p>
         
@@ -31,14 +31,20 @@
             <div class="document-card" onclick="showDocumentDetail('chinese_transcript')">
                 <h3>中文歷年成績單</h3>
             </div>
-            <div class="document-card" onclick="showDocumentDetail('degree_copy')">
-                <h3>學位(畢業)證書影本</h3>
-            </div>
             <div class="document-card" onclick="showDocumentDetail('in_school')">
                 <h3>中文在學證明書</h3>
             </div>
+            <div class="document-card" onclick="showDocumentDetail('degree_copy')">
+                <h3>學位(畢業)證書影本</h3>
+            </div>
+            <div class="document-card" onclick="showDocumentDetail('chinese_suspension_cert')">
+                <h3>中文休學證明書</h3>
+            </div>
+            <div class="document-card" onclick="showDocumentDetail('chinese_completion_cert')">
+                <h3>中文修業證明書 (含成績單)</h3>
+            </div>
             <div class="document-card" onclick="showDocumentDetail('chinese_degree_cert')">
-                <h3>中文學位證明書</h3>
+                <h3>補發中文學位證明書</h3>
             </div>
         </div>
 
@@ -47,14 +53,17 @@
             <div class="document-card" onclick="showDocumentDetail('english_transcript')">
                 <h3>英文歷年成績單</h3>
             </div>
-            <div class="document-card" onclick="showDocumentDetail('english_degree_cert')">
-                <h3>英文學位證明書</h3>
-            </div>
             <div class="document-card" onclick="showDocumentDetail('english_in_school')">
                 <h3>英文在學證明書</h3>
             </div>
-             <div class="document-card" onclick="showDocumentDetail('english_transfer')">
-                <h3>英文修/休學證明書</h3>
+            <div class="document-card" onclick="showDocumentDetail('english_suspension_cert')">
+                <h3>英文休學證明書</h3>
+            </div>
+            <div class="document-card" onclick="showDocumentDetail('english_completion_cert')">
+                <h3>英文修業證明書 (含成績單)</h3>
+            </div>
+            <div class="document-card" onclick="showDocumentDetail('english_degree_cert')">
+                <h3>英文學位證明書</h3>
             </div>
         </div>
         
@@ -89,8 +98,20 @@
                 content: `
                     <h4>申請流程：</h4>
                     <ul class="step-list">
+                        <li>**費用：** $10/份。</li>
                         <li>**臨櫃/郵寄：** 臨櫃辦理者可至自動繳費機繳費後立刻取件。</li>
-                        <li>**畢業生：** 畢業生無法申請學期成績單。</li>
+                        <li>**等待時間：** 一般情況**立刻取件**。</li>
+                    </ul>
+                `
+            },
+            in_school: {
+                title: "中文在學證明書申請",
+                restriction: "無法郵寄取件，請臨櫃辦理。工本費 $10/份。",
+                content: `
+                    <h4>申請流程：</h4>
+                    <ul class="step-list">
+                        <li>**申請時機：** 須於學期**學雜費已繳交且已銷帳後**始可申請。</li>
+                        <li>**申請方式：** 三民校區可利用**自動繳費機**，繳費後即可**立即取件**。</li>
                         <li>**費用：** $10/份。</li>
                         <li>**等待時間：** 立刻取件。</li>
                     </ul>
@@ -108,18 +129,6 @@
                     </ul>
                 `
             },
-            in_school: {
-                title: "中文在學證明書申請",
-                restriction: "無法郵寄取件，請臨櫃辦理。工本費 $10/份。",
-                content: `
-                    <h4>申請流程：</h4>
-                    <ul class="step-list">
-                        <li>**申請時機：** 須於學期**學雜費已繳交且已銷帳後**始可申請。</li>
-                        <li>**申請方式：** 三民校區可利用**自動繳費機**，繳費後即可**立即取件**。</li>
-                        <li>**等待時間：** 立刻取件。</li>
-                    </ul>
-                `
-            },
             chinese_degree_cert: {
                 title: "中文學位證明書申請 (限正本遺失者)",
                 restriction: "<strong style='color:red;'>無法以郵寄方式領取！</strong> 限正本遺失者申請，完成申請程序後正本失去效力 (每次限申請一份)。工本費 $100/份。",
@@ -132,6 +141,32 @@
                     </ul>
                 `
             },
+            chinese_suspension_cert: {
+                title: "中文休學證明書申請",
+                restriction: "無特殊郵寄限制。工本費 $10/份。",
+                content: `
+                    <h4>申請流程：</h4>
+                    <ul class="step-list">
+                        <li>**適用對象：** 休學生。</li>
+                        <li>**費用：** $10/份。</li>
+                        <li>**等待時間：** 半天取件。</li>
+                    </ul>
+                `
+            },
+            chinese_completion_cert: {
+                title: "中文修業證明書申請 (含歷年成績單)",
+                restriction: "無特殊郵寄限制。工本費 $10/份。",
+                content: `
+                    <h4>申請流程：</h4>
+                    <ul class="step-list">
+                        <li>**適用對象：** 僅**退學生**可申請。</li>
+                        <li>**文件內容：** 必須包含歷年成績單。</li>
+                        <li>**費用：** $10/份。</li>
+                        <li>**等待時間：** 半天取件。</li>
+                    </ul>
+                `
+            },
+            
             // --- 英文文件 ---
             english_transcript: {
                 title: "英文歷年成績單申請 (可彌封/不彌封)",
@@ -141,6 +176,7 @@
                     <ul class="step-list">
                         <li>**必備資料：** 需檢附**護照影本**。</li>
                         <li>**彌封：** 申請時須告知是否需要彌封。</li>
+                        <li>**費用：** $10/份。</li>
                         <li>**等待時間：** 約 **3 天**工作天取件。</li>
                     </ul>
                 `
@@ -157,7 +193,7 @@
                     </ul>
                 `
             },
-             english_in_school: {
+            english_in_school: {
                 title: "英文在學證明書申請",
                 restriction: "無法郵寄取件，請臨櫃辦理。申請英文文件者請依護照填寫並檢附護照影本。工本費 $10/份。",
                 content: `
@@ -169,14 +205,27 @@
                     </ul>
                 `
             },
-            english_transfer: {
-                title: "英文修/休學證明書申請",
-                restriction: "無特殊郵寄限制。僅退學生可申請修業證明書。申請英文文件者請依護照填寫並檢附護照影本。工本費 $10/份。",
+            english_suspension_cert: {
+                title: "英文休學證明書申請",
+                restriction: "無特殊郵寄限制。申請英文文件者請依護照填寫並檢附護照影本。工本費 $10/份。",
                 content: `
                     <h4>申請流程：</h4>
                     <ul class="step-list">
+                        <li>**適用對象：** 休學生。</li>
                         <li>**費用：** $10/份。</li>
-                        <li>**退學生注意：** 修業證明書須含歷年成績單。</li>
+                        <li>**等待時間：** 約 **3 天**工作天取件。</li>
+                    </ul>
+                `
+            },
+            english_completion_cert: {
+                title: "英文修業證明書申請 (含歷年成績單)",
+                restriction: "無特殊郵寄限制。僅退學生可申請。申請英文文件者請依護照填寫並檢附護照影本。工本費 $10/份。",
+                content: `
+                    <h4>申請流程：</h4>
+                    <ul class="step-list">
+                        <li>**適用對象：** 僅**退學生**可申請。</li>
+                        <li>**文件內容：** 必須包含歷年成績單。</li>
+                        <li>**費用：** $10/份。</li>
                         <li>**等待時間：** 約 **3 天**工作天取件。</li>
                     </ul>
                 `
