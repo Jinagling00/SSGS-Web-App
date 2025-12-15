@@ -18,14 +18,18 @@ function checkStudentId() {
 
     // 2. 判斷並導流
     if (firstDigit === '1') {
-        // **日間部學生 (學號1開頭) - 導向服務選單**
-        displayMessage('alert-info', '身份確認：日間部註冊組。正在導向服務選單...');
+        // **日間部學生 (學號1開頭)**
         
-        // 傳遞學號到下一頁，以便進行後續的身份判斷（例如：性別、學位）
+        // 解析學位資訊
+        const levelInfo = parseStudentLevel(studentIdInput);
+        
+        displayMessage('alert-info', `身份確認：日間部/${levelInfo.levelName}。正在導向服務選單...`);
+        
+        // 導向 service_menu.html，並傳遞學號和學位資訊
         setTimeout(() => {
-            window.location.href = `service_menu.html?id=${studentIdInput}`;
+            window.location.href = `service_menu.html?id=${studentIdInput}&level=${levelInfo.levelName}&consent=${levelInfo.requiresParentConsent}`;
         }, 1500);
-
+        
     } else if (['2', '3', '4'].includes(firstDigit)) {
         // **非日間部學生 (學號2, 3, 4開頭) - 顯示聯絡資訊**
         
