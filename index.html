@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>註冊組自我服務指引系統 (SSGS)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* A. 顏色主色系: 專業與信任 */
+        :root {
+            --primary-color: #00478F; /* 深藍/藏青 */
+            --accent-color: #FFC000;  /* 中科大黃/金色 */
+            --text-color: #333;
+            --bg-color: #f4f7f6;
+        }
+
+        /* B. 字體與字重: 清楚與可讀性 */
+        body {
+            font-family: 'Noto Sans TC', Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            background: #fff;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 500px;
+            text-align: center;
+        }
+
+        h1 {
+            color: var(--primary-color);
+            font-weight: 700;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            border-bottom: 3px solid var(--accent-color);
+            display: inline-block;
+            padding-bottom: 5px;
+        }
+
+        p {
+            margin-bottom: 25px;
+            font-size: 1.05em;
+        }
+
+        .input-group {
+            margin-bottom: 30px;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        #studentId {
+            width: calc(100% - 24px);
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1.1em;
+            transition: border-color 0.3s;
+        }
+
+        #studentId:focus {
+            border-color: var(--primary-color);
+            outline: none;
+        }
+
+        /* C. 核心元件設計: 服務與指引 (決策樹按鈕) */
+        .decision-button {
+            background-color: var(--accent-color);
+            color: var(--primary-color);
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-size: 1.2em;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background-color 0.3s, box-shadow 0.3s;
+            width: 100%;
+        }
+
+        .decision-button:hover {
+            background-color: #FFD45D; /* 稍微淺一點的黃色 */
+            box-shadow: 0 4px 15px rgba(255, 192, 0, 0.4);
+        }
+
+        .alert-message {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: left;
+            font-weight: 400;
+        }
+        
+        .alert-error {
+            background-color: #ffe0e0;
+            color: #d8000c;
+            border: 1px solid #d8000c;
+        }
+        
+        .alert-info {
+            background-color: #e0f2ff;
+            color: #00478F;
+            border: 1px solid #00478F;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📑 註冊組自我服務指引系統 (SSGS)</h1>
+        <p>請輸入您的**學號**進行身份初步辨識，以確保您使用正確的指引服務。</p>
+        
+        <div class="input-group">
+            <label for="studentId">您的學號：</label>
+            <input type="number" id="studentId" placeholder="請輸入學號，例如: 1XXXXXXXX" required>
+        </div>
+        
+        <button class="decision-button" onclick="checkStudentId()">
+            開始流程辨識
+        </button>
+        
+        <div id="messageContainer">
+            </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
