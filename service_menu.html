@@ -1,29 +1,51 @@
-<div class="container">
-    <h1>🏛 服務選單：日間部註冊組</h1>
-    <p>您好，已確認您的身份。請選擇您想查詢的服務項目：</p>
-    
-    <button class="option-button" onclick="navigate('document_apply.html')">
-        📄 申請文件類 (成績單、學位證明等)
-    </button>
-    
-    <button class="option-button" onclick="navigate('withdrawal_guide.html')">
-        ⏳ 休/退學與復學指引
-    </button>
-    
-    <button class="option-button" onclick="navigate('iccard_guide.html')">
-        💳 學生 IC 卡遺失/補發
-    </button>
-    
-    <button class="option-button" onclick="navigate('name_change_guide.html')">
-        ✏️ 更改姓名/地址申請
-    </button>
-
-    <div id="userInfo">
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>服務選單 - SSGS</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/SSGS-Web-App/styles.css"> 
+</head>
+<body>
+    <div class="container">
+        <h1>🏛 服務選單：日間部註冊組</h1>
+        <p>您好，已確認您的身份。請選擇您想查詢的服務項目：</p>
+        
+        <div class="service-grid">
+            
+            <a class="service-card" href="/SSGS-Web-App/document_apply.html">
+                <span class="service-icon">📄</span>
+                <p class="card-title">申請文件查詢</p>
+                <small style="color: #666;">成績單、學位證明等</small>
+            </a>
+            
+            <a class="service-card" href="/SSGS-Web-App/withdrawal_guide.html">
+                <span class="service-icon">⏳</span>
+                <p class="card-title">休/退學與復學指引</p>
+                <small style="color: #666;">動態文件清單與流程</small>
+            </a>
+            
+            <a class="service-card" href="/SSGS-Web-App/iccard_guide.html">
+                <span class="service-icon">💳</span>
+                <p class="card-title">學生 IC 卡遺失/補發</p>
+                <small style="color: #666;">線上掛失與領取步驟</small>
+            </a>
+            
+            <a class="service-card" href="/SSGS-Web-App/name_change_guide.html">
+                <span class="service-icon">✏️</span>
+                <p class="card-title">更改姓名/地址申請</p>
+                <small style="color: #666;">戶籍與郵寄地址變更</small>
+            </a>
+            
         </div>
-</div>
-<script>
-    function navigate(url) {
-        // 實際應用中，可以將學號等參數帶到下一頁
-        window.location.href = url;
-    }
-</script>
+        
+        <a href="/SSGS-Web-App/index.html" class="option-button" style="margin-top: 40px; background-color: #f0f0f0; color: var(--text-color); border: 1px solid #ccc;">&larr; 重新輸入學號 / 返回門戶</a>
+
+        <div id="userInfo">
+            </div>
+    </div>
+</body>
+</html>
