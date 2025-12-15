@@ -1,71 +1,93 @@
-<div class="container">
-    <h1>⏳ 休/退學與復學指引</h1>
-    <div id="loadingInfo">
-        <p>正在確認您的學籍身份...</p>
-    </div>
-    
-    <div id="guideContent" style="display: none;">
-        <p>您的身份已辨識為：**<span id="studentLevelDisplay"></span>**。</p>
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>休/退學與復學指引 - SSGS</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/SSGS-Web-App/styles.css"> 
+</head>
+<body>
+    <div class="container">
+        <h1>⏳ 休/退學與復學指引</h1>
+        <div id="loadingInfo">
+            <p>正在確認您的學籍身份...</p>
+        </div>
         
-        <div class="result-box">
-            <h3>必備文件清單 (依據您的學籍狀態)</h3>
-            <ul id="requiredDocsList">
-                <li>**休/退學申請書** (一式兩份，可至註冊組領取或表單下載處下載)</li>
-                <li>**學生證** (如遺失須先線上掛失並於申請書上註明)</li>
+        <div id="guideContent" style="display: none;">
+            <p>您的身份已辨識為：**<span id="studentLevelDisplay"></span>**。</p>
+            
+            <div class="result-box">
+                <h3>步驟一：申請文件準備</h3>
+                <p>請準備以下文件，並依據流程圖 準備會辦單位簽章：</p>
+                
+                <h4>必備文件清單 (依據您的學籍狀態)</h4>
+                <ul id="requiredDocsList">
+                    <li>**休/退學申請書** (一式兩份，可至註冊組領取或表單下載處下載)</li>
+                    <li>**學生證** (如遺失須先線上掛失並於申請書上註明)</li>
+                    </ul>
+
+                <h4 style="margin-top: 20px;">步驟二：費用與特殊身份處理</h4>
+                <ul class="step-list">
+                    <li>
+                        <strong style="color: red;">學雜費退費：</strong> **學期中**休/退學且符合退費標準者，需填寫**退費申請書**，並檢附**繳費收據正本**及**本人存摺封面影本**。
+                    </li>
+                    <li>
+                        <strong style="color: red;">學貸身份：</strong> 若為學貸身份，請先會辦**課外活動指導組**，不需繳交學雜費退費申請書。
+                    </li>
+                    <li>
+                        <strong style="color: blue;">兵役提醒 (男生未服役)：</strong> 需額外填寫**兵役切結書**，並會辦**生輔組兵役承辦人**。
+                    </li>
+                    <li>
+                        <strong style="color: blue;">外籍生提醒：</strong> 需加會**國際事務處**。
+                    </li>
+                    <li>
+                        <strong style="color: blue;">住宿生提醒：</strong> 需加會**宿舍組**。
+                    </li>
                 </ul>
+
+                <h4 style="margin-top: 20px;">📌 復學文件 (適用休學期滿者)</h4>
+                <p>僅需繳交**復學申請書**，由註冊組審核。</p>
+            </div>
             
-            <h4>特殊情況：費用處理 (請自行判斷是否適用)</h4>
-            <ul>
-                <li>**學雜費退費申請書**：**學期中**申請休/退學且符合退費標準**且非學貸身份**時，需繳交。請黏貼**繳費收據正本**及**本人存摺封面影本**。</li>
-                <li>**學貸相關文件**：若為學貸身份，需會辦課外活動指導組，不需繳交退費申請書。</li>
-            </ul>
-            
-            <h4>📌 復學文件 (適用休學期滿者)</h4>
-            <p>僅需繳交**復學申請書**，由註冊組審核。</p>
-            
-            <p style="margin-top: 15px; border-left: 5px solid red; padding-left: 10px;">
-                **⚠ 兵役提醒 (男生未服役)**：需額外填寫**兵役切結書**，並會辦**生輔組兵役承辦人**。
-            </p>
+            <a href="/SSGS-Web-App/service_menu.html" class="option-button" style="margin-top: 30px;">&larr; 返回服務選單</a>
         </div>
     </div>
-</div>
 
-<script src="/SSGS-Web-App/app.js"></script>
-<script>
-    // 在 withdrawal_guide.html 中執行的 JS 邏輯
-    document.addEventListener('DOMContentLoaded', () => {
-        const urlParams = new URLSearchParams(window.location.search);
-        const studentLevel = urlParams.get('level');
-        const requiresConsent = urlParams.get('consent') === 'true'; // 轉為布林值
+    <script src="/SSGS-Web-App/app.js"></script> 
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const studentLevel = urlParams.get('level');
+            const requiresConsent = urlParams.get('consent') === 'true'; 
 
-        document.getElementById('loadingInfo').style.display = 'none';
-        
-        if (studentLevel) {
-            document.getElementById('studentLevelDisplay').textContent = studentLevel;
+            document.getElementById('loadingInfo').style.display = 'none';
+            
             const requiredDocsList = document.getElementById('requiredDocsList');
-            
-            // 根據辨識結果動態插入文件清單
-            
-            // 1. 家長同意書判斷 (學號第二碼邏輯)
-            if (requiresConsent) {
-                const consentItem = document.createElement('li');
-                consentItem.innerHTML = `**家長或監護人同意書** <span style="color: red;">(因您是 **${studentLevel}**，此為必備文件)</span>`;
-                requiredDocsList.appendChild(consentItem);
+            const studentLevelDisplay = document.getElementById('studentLevelDisplay');
+
+            if (studentLevel && studentLevelDisplay) {
+                studentLevelDisplay.textContent = studentLevel;
+                
+                // 動態插入家長同意書判斷
+                if (requiresConsent) {
+                    const consentItem = document.createElement('li');
+                    consentItem.innerHTML = `**家長或監護人同意書** <span style="color: red;">(因您是 **${studentLevel}**，此為必備文件)</span>`;
+                    requiredDocsList.appendChild(consentItem);
+                } else {
+                    const noteItem = document.createElement('li');
+                    noteItem.innerHTML = `<strong style="color: green;">無需</strong> 繳交家長或監護人同意書 (因您是 ${studentLevel} 層級)。`;
+                    requiredDocsList.appendChild(noteItem);
+                }
+
+                document.getElementById('guideContent').style.display = 'block';
             } else {
-                const noteItem = document.createElement('li');
-                noteItem.innerHTML = `<span style="color: green; font-weight: 700;">無需</span> 繳交家長或監護人同意書。`;
-                requiredDocsList.appendChild(noteItem);
+                document.getElementById('guideContent').innerHTML = '<p style="color: red;">身份資訊遺失，請返回首頁重新輸入學號。</p>';
+                document.getElementById('guideContent').style.display = 'block';
             }
-            
-            // 2. 補充兵役切結書的固定位置（雖然已經有紅色提醒，但作為文件清單的一部分）
-            const militaryItem = document.createElement('li');
-            militaryItem.innerHTML = `**兵役切結書** <span style="color: red;">(男生未服役者需額外填寫)</span>`;
-            requiredDocsList.appendChild(militaryItem);
-
-
-            document.getElementById('guideContent').style.display = 'block';
-        } else {
-            document.getElementById('guideContent').innerHTML = '<p style="color: red;">身份資訊遺失，請返回首頁重新輸入學號。</p>';
-        }
-    });
-</script>
+        });
+    </script>
+</body>
+</html>
