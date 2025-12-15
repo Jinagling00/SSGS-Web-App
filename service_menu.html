@@ -46,5 +46,26 @@
         <div id="userInfo">
             </div>
     </div>
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const studentId = urlParams.get('id');
+        const studentLevel = urlParams.get('level');
+        const requiresConsent = urlParams.get('consent');
+        
+        const withdrawalLink = document.querySelector('a[href="/SSGS-Web-App/withdrawal_guide.html"]');
+        
+        // 如果參數存在，動態修改連結
+        if (studentId && studentLevel) {
+            withdrawalLink.href = `/SSGS-Web-App/withdrawal_guide.html?id=${studentId}&level=${studentLevel}&consent=${requiresConsent}`;
+        }
+        
+        // 可選：顯示已辨識身份
+        const userInfo = document.getElementById('userInfo');
+        if (userInfo && studentLevel) {
+             userInfo.innerHTML = `<p style="color: var(--primary-color); font-weight: 700;">您的身份：日間部 / ${studentLevel}</p>`;
+        }
+    });
+</script>
 </body>
 </html>
