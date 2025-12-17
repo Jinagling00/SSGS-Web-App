@@ -17,7 +17,7 @@
         </div>
         
         <div id="guideContent" style="display: none;">
-            <p>您的身份已辨識為：**<span id="studentLevelDisplay"></span>**。</p>
+            <p>您的身份已辨識為：<span id="studentLevelDisplay"></span>。</p>
             
             <div class="result-box">
                 <h3>步驟一：申請文件準備</h3>
@@ -25,27 +25,27 @@
                 
                 <h4>必備文件清單 (依據您的學籍狀態)</h4>
                 <ul id="requiredDocsList">
-                    <li>**休/退學申請書** (一式兩份，可至註冊組領取或表單下載處下載)</li>
-                    <li>**學生證** (如遺失須先線上掛失並於申請書上註明，由學生自行負責)</li>
+                    <li>休/退學申請書 (一式兩份，可至註冊組領取或表單下載處下載)</li>
+                    <li>學生證 (如遺失須先線上掛失並於申請書上註明，由學生自行負責)</li>
                     </ul>
 
                 <h4 style="margin-top: 20px;">步驟二：費用與特殊身份處理</h4>
                 <ul class="step-list">
                     <li>
-                        <strong style="color: red;">學雜費退費：</strong> **學期中**休/退學且符合退費標準者，需填寫**退費申請書**，並檢附**繳費收據正本**及**本人存摺封面影本**。
+                        <strong style="color: red;">學雜費退費：</strong> 學期中休/退學且符合退費標準者，需填寫退費申請書，並檢附繳費收據正本及本人存摺封面影本。
                     </li>
                     <li>
-                        <strong style="color: red;">學貸身份：</strong> 若為學貸身份，請先會辦**課外活動指導組**，不需繳交學雜費退費申請書。
+                        <strong style="color: red;">學貸身份：</strong> 若為學貸身份，請先會辦課外活動指導組，不需繳交學雜費退費申請書。
                     </li>
                     <li>
-                        <strong style="color: blue;">兵役提醒 (男生未服役)：</strong> 需額外填寫**兵役切結書**，並會辦**生輔組兵役承辦人**。
+                        <strong style="color: blue;">兵役提醒 (男生未服役)：</strong> 需額外填寫兵役切結書，並會辦生輔組兵役承辦人。
                     </li>
-                    <li><strong style="color: blue;">住宿生：</strong> 需加會**宿舍組**。</li>
-                    <li><strong style="color: blue;">外籍生：</strong> 需加會**國際事務處**。</li>
+                    <li><strong style="color: blue;">住宿生：</strong> 需加會宿舍組。</li>
+                    <li><strong style="color: blue;">外籍生：</strong> 需加會國際事務處。</li>
                 </ul>
 
                 <h4 style="margin-top: 20px;">📌 復學文件 (適用休學期滿者)</h4>
-                <p>僅需繳交**復學申請書**，由註冊組審核。</p>
+                <p>僅需繳交復學申請書，由註冊組審核。</p>
             </div>
             
             <a href="/SSGS-Web-App/service_menu.html" class="option-button back-to-home-btn">&larr; 返回服務選單</a>
@@ -70,7 +70,7 @@
                 // 動態插入家長同意書判斷
                 if (requiresConsent) {
                     const consentItem = document.createElement('li');
-                    consentItem.innerHTML = `**家長或監護人同意書** <span style="color: red;">(因您是 **${studentLevel}**，此為必備文件)</span>`;
+                    consentItem.innerHTML = `家長或監護人同意書 <span style="color: red;">(因您是 ${studentLevel}，此為必備文件)</span>`;
                     requiredDocsList.appendChild(consentItem);
                 } else {
                     const noteItem = document.createElement('li');
