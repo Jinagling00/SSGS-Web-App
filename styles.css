@@ -1,5 +1,6 @@
 /* =========================================
-   SSGS 統一視覺樣式表 (styles.css)
+   統一視覺樣式表 (styles.css)
+   整合獨立郵寄計算機樣式與 RWD 優化
    ========================================= */
 
 /* 1. UI 顏色與全域變數定義 */
@@ -26,7 +27,7 @@ body {
     min-height: 100vh;
 }
 
-/* 3. 容器樣式 (桌面與手機通用基礎) */
+/* 3. 容器樣式 */
 .container {
     background: var(--card-bg);
     padding: 30px 40px;
@@ -73,7 +74,7 @@ h2.document-group-title {
     text-align: center;
     text-decoration: none;
     display: block;
-    margin: 10px auto; /* 預設置中 */
+    margin: 10px auto;
     width: 100%;
     box-sizing: border-box;
     transition: background-color 0.3s, box-shadow 0.3s, transform 0.1s;
@@ -88,17 +89,17 @@ h2.document-group-title {
     transform: scale(0.98);
 }
 
-/* 6. 導航與返回按鈕修正 (解決跑版關鍵) */
+/* 6. 導航與返回按鈕修正 */
 .back-to-home-btn {
     display: block !important;
     width: 90% !important;
     max-width: 320px !important;
-    margin: 30px auto !important; /* 確保左右 auto 置中 */
+    margin: 30px auto !important;
     padding: 12px 0;
     float: none !important;
 }
 
-/* 7. 網格佈局 (服務選單與文件卡片) */
+/* 7. 網格佈局 */
 .service-grid, .document-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -124,21 +125,75 @@ h2.document-group-title {
     box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
 }
 
-.service-icon {
-    font-size: 3em;
-    color: var(--accent-color);
-    margin-bottom: 10px;
-    display: block;
+/* 8. 郵寄費用精算工具樣式 (獨立區塊) */
+.result-box {
+    background: #ffffff;
+    border: 2px solid var(--primary-color);
+    padding: 25px;
+    border-radius: 12px;
+    margin: 20px 0;
+    text-align: left;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
 }
 
-.card-title {
-    font-size: 1.15em;
-    font-weight: 700;
-    color: var(--primary-color);
-    margin: 0;
+.calc-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #f0f0f0;
 }
 
-/* 8. 步驟流程、訊息與結果區塊 */
+.calc-row:last-of-type {
+    border-bottom: none;
+}
+
+.calc-input {
+    width: 65px;
+    padding: 6px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    text-align: center;
+    font-size: 1em;
+}
+
+/* 費用顯示區塊 (匯票與郵資並排) */
+.fee-display-container {
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+/* 匯票背景黃色，郵資背景藍色 */
+.fee-display-container > div:first-child {
+    flex: 1;
+    background: #fffde7;
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid var(--accent-color);
+    text-align: center;
+}
+
+.fee-display-container > div:last-child {
+    flex: 1;
+    background: var(--info-bg);
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid var(--primary-color);
+    text-align: center;
+}
+
+/* 9. 其他 UI 元件 */
+.mail-rule-box {
+    background-color: #fffde7;
+    border: 2px solid var(--accent-color);
+    padding: 15px;
+    margin-top: 20px;
+    border-radius: 8px;
+    text-align: left;
+}
+
 .flow-step {
     background: #fff;
     border: 1px solid #ddd;
@@ -146,18 +201,7 @@ h2.document-group-title {
     padding: 20px;
     margin-bottom: 25px;
     text-align: left;
-    position: relative;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-}
-
-.flow-step h2 {
-    color: var(--primary-color);
-    margin-top: 0;
-    margin-bottom: 15px;
-    font-size: 1.4em;
-    border-bottom: 2px solid var(--accent-color);
-    padding-bottom: 5px;
-    display: inline-block;
 }
 
 .warning-note {
@@ -167,41 +211,6 @@ h2.document-group-title {
     margin-top: 15px;
     font-size: 0.9em;
     color: var(--error-color);
-}
-
-.alert-message {
-    margin-top: 20px;
-    padding: 15px;
-    border-radius: 8px;
-    text-align: left;
-}
-
-.alert-error { background-color: #ffe0e0; color: var(--error-color); border: 1px solid var(--error-color); }
-.alert-info { background-color: var(--info-bg); color: var(--primary-color); border: 1px solid var(--primary-color); }
-
-.result-box {
-    background: #f0f8ff;
-    border: 2px solid var(--primary-color);
-    padding: 20px;
-    border-radius: 10px;
-    margin-top: 20px;
-    text-align: left;
-}
-
-/* 9. 郵寄費用計算機樣式 (用於 document_apply.html) */
-.calc-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 12px;
-}
-
-.calc-input {
-    width: 60px;
-    padding: 5px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    text-align: center;
 }
 
 /* 10. 媒體查詢 (RWD)：針對手機螢幕優化 */
@@ -216,7 +225,6 @@ h2.document-group-title {
         text-align: center;
     }
 
-    /* 服務選單與文件網格改為垂直單欄排列 */
     .service-grid, .document-grid {
         display: flex !important;
         flex-direction: column !important;
@@ -226,11 +234,15 @@ h2.document-group-title {
     
     .service-card, .document-card {
         width: 100% !important;
-        max-width: 320px; /* 限制寬度讓視覺更集中 */
+        max-width: 320px;
         box-sizing: border-box;
     }
 
-    /* 關鍵：修正手機端按鈕字體與邊距 */
+    /* 手機版費用顯示改為上下排列 */
+    .fee-display-container {
+        flex-direction: column;
+    }
+
     .option-button, .decision-button {
         padding: 12px 10px;
         font-size: 1em;
