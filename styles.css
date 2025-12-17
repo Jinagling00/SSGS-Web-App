@@ -72,7 +72,9 @@ h1 {
 .back-to-home-btn {
     /* 覆蓋 option-button 在 grid 容器內的 100% 寬度 */
     max-width: 400px; 
-    margin: 40px auto 0 auto !important; /* 置中並增加上方間距 */
+    margin: 30px auto 0 auto !important; /* 置中並增加上方間距 */
+    /* 確保按鈕是區塊元素才能置中 */
+    display: block;
 }
 
 /* 確保 general button 樣式不影響 a 標籤導覽卡片 */
