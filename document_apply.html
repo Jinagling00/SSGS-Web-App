@@ -3,13 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>文件申請查詢</title>
+    <title>文件申請查詢 - SSGS</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/SSGS-Web-App/styles.css"> 
     <style>
-        /* Modal 樣式，這裡只放與 Modal 相關的 CSS */
         .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0, 0, 0, 0.6); }
         .modal-content { background-color: #fefefe; margin: 5% auto; padding: 30px; border: 1px solid #888; width: 90%; max-width: 700px; border-radius: 10px; position: relative; }
         .close-btn { color: #aaa; float: right; font-size: 28px; font-weight: bold; line-height: 1; cursor: pointer; }
@@ -19,56 +18,47 @@
         .step-list { list-style: none; padding: 0; }
         .step-list li { background: #f7f7f7; padding: 10px; border-left: 4px solid var(--primary-color); margin-bottom: 8px; font-size: 0.95em; }
         .document-group-title { margin-top: 40px; margin-bottom: 10px; border-left: 5px solid var(--accent-color); padding-left: 10px; text-align: left; color: var(--primary-color); }
+        
+        /* 計算機專用樣式 */
+        .calc-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+        .calc-input { width: 60px; padding: 5px; border: 1px solid #ccc; border-radius: 4px; text-align: center; }
+        @media (max-width: 600px) {
+            .fee-display-container { flex-direction: column; gap: 10px; }
+        }
     </style>
 </head>
 <body>
     <div class="container"> 
         <h1>📄 流程 A：申請文件查詢</h1>
         <p>所有文件申請請使用《日間部註冊組各項證明申請書》。請點擊卡片查看詳細步驟。</p>
-        <a href="/SSGS-Web-App/forms/國立臺中科技大學日間部註冊組各項證明申請書.pdf" download class="option-button" style="background-color: #e0f2ff; color: #00478F; border: 1px solid #00478F; display: inline-block; width: auto; padding: 10px 20px;">
-    📥 下載《各項證明申請書》</a>
-        <p>委託他人辦理需檢附委託書，並浮貼委託人身分證正反面影本；受託人須攜帶身分證正本供核對身分。</p>
-        <a href="/SSGS-Web-App/forms/國立臺中科技大學委託書.pdf" download class="option-button" style="background-color: #e0f2ff; color: #00478F; border: 1px solid #00478F; display: inline-block; width: auto; padding: 10px 20px;">
-    📥 下載《委託書》</a>
+        
+        <div style="margin-bottom: 20px;">
+            <a href="/SSGS-Web-App/forms/國立臺中科技大學日間部註冊組各項證明申請書.pdf" download class="option-button" style="background-color: #e0f2ff; color: #00478F; border: 1px solid #00478F; display: inline-block; width: auto; padding: 10px 20px; margin-right: 10px;">
+            📥 下載《各項證明申請書》</a>
+            
+            <a href="/SSGS-Web-App/forms/國立臺中科技大學委託書.pdf" download class="option-button" style="background-color: #e0f2ff; color: #00478F; border: 1px solid #00478F; display: inline-block; width: auto; padding: 10px 20px;">
+            📥 下載《委託書》</a>
+        </div>
+        
+        <p style="font-size: 0.9em; color: #666;">委託他人辦理需檢附委託書，並浮貼委託人身分證正反面影本；受託人須攜帶身分證正本供核對身分。</p>
+
         <h2 class="document-group-title">中文文件申請 (Chinese Documents)</h2>
         <div class="document-grid">
-            <div class="document-card" onclick="showDocumentDetail('chinese_transcript')">
-                <h3>中文歷年成績單</h3>
-            </div>
-            <div class="document-card" onclick="showDocumentDetail('in_school')">
-                <h3>中文在學證明書</h3>
-            </div>
-            <div class="document-card" onclick="showDocumentDetail('degree_copy')">
-                <h3>學位(畢業)證書影本</h3>
-            </div>
-            <div class="document-card" onclick="showDocumentDetail('chinese_suspension_cert')">
-                <h3>中文休學證明書</h3>
-            </div>
-            <div class="document-card" onclick="showDocumentDetail('chinese_completion_cert')">
-                <h3>中文修業證明書 (含成績單)</h3>
-            </div>
-            <div class="document-card" onclick="showDocumentDetail('chinese_degree_cert')">
-                <h3>補發中文學位證明書</h3>
-            </div>
+            <div class="document-card" onclick="showDocumentDetail('chinese_transcript')"><h3>中文歷年成績單</h3></div>
+            <div class="document-card" onclick="showDocumentDetail('in_school')"><h3>中文在學證明書</h3></div>
+            <div class="document-card" onclick="showDocumentDetail('degree_copy')"><h3>學位(畢業)證書影本</h3></div>
+            <div class="document-card" onclick="showDocumentDetail('chinese_suspension_cert')"><h3>中文休學證明書</h3></div>
+            <div class="document-card" onclick="showDocumentDetail('chinese_completion_cert')"><h3>中文修業證明書 (含成績單)</h3></div>
+            <div class="document-card" onclick="showDocumentDetail('chinese_degree_cert')"><h3>補發中文學位證明書</h3></div>
         </div>
 
         <h2 class="document-group-title">英文文件申請 (English Documents)</h2>
         <div class="document-grid">
-            <div class="document-card" onclick="showDocumentDetail('english_transcript')">
-                <h3>英文歷年成績單</h3>
-            </div>
-            <div class="document-card" onclick="showDocumentDetail('english_in_school')">
-                <h3>英文在學證明書</h3>
-            </div>
-            <div class="document-card" onclick="showDocumentDetail('english_suspension_cert')">
-                <h3>英文休學證明書</h3>
-            </div>
-            <div class="document-card" onclick="showDocumentDetail('english_completion_cert')">
-                <h3>英文修業證明書 (含成績單)</h3>
-            </div>
-            <div class="document-card" onclick="showDocumentDetail('english_degree_cert')">
-                <h3>英文學位證明書</h3>
-            </div>
+            <div class="document-card" onclick="showDocumentDetail('english_transcript')"><h3>英文歷年成績單</h3></div>
+            <div class="document-card" onclick="showDocumentDetail('english_in_school')"><h3>英文在學證明書</h3></div>
+            <div class="document-card" onclick="showDocumentDetail('english_suspension_cert')"><h3>英文休學證明書</h3></div>
+            <div class="document-card" onclick="showDocumentDetail('english_completion_cert')"><h3>英文修業證明書 (含成績單)</h3></div>
+            <div class="document-card" onclick="showDocumentDetail('english_degree_cert')"><h3>英文學位證明書</h3></div>
         </div>
         
         <a href="/SSGS-Web-App/service_menu.html" class="option-button back-to-home-btn">&larr; 返回服務選單</a>
@@ -77,14 +67,70 @@
     <div id="documentModal" class="modal">
         <div class="modal-content">
             <span class="close-btn" onclick="closeModal()">&times;</span>
-            <h2 id="modalTitle" style="color: var(--primary-color);"></h2>
+            <h2 id="modalTitle" style="color: var(--primary-color); margin-top: 0;"></h2>
+            
             <div id="modalBody"></div>
+
+            <div class="result-box" style="border: 2px solid var(--primary-color); background-color: #fff; padding: 20px; margin-top: 20px;">
+                <h3 style="margin-top: 0; color: var(--primary-color); font-size: 1.1em; border-bottom: 1px solid #eee; padding-bottom: 10px;">⚖️ 郵寄費用精算工具 (依重量預估)</h3>
+                <div id="calculator-form" style="text-align: left; font-size: 0.95em; margin-top: 15px;">
+                    <div class="calc-row">
+                        <label>中文成績/在學/休學 ($10, 5g):</label>
+                        <input type="number" class="calc-input" data-price="10" data-weight="5" min="0" value="0">
+                    </div>
+                    <div class="calc-row">
+                        <label>修業證明 (含成績) ($10, 15g):</label>
+                        <input type="number" class="calc-input" data-price="10" data-weight="15" min="0" value="0">
+                    </div>
+                    <div class="calc-row">
+                        <label>中/英文學位證明書 ($100, 15g):</label>
+                        <input type="number" class="calc-input" data-price="100" data-weight="15" min="0" value="0">
+                    </div>
+                    <div class="calc-row">
+                        <label>英文歷年成績單 ($10, 25g):</label>
+                        <input type="number" class="calc-input" data-price="10" data-weight="25" min="0" value="0">
+                    </div>
+
+                    <div style="margin-top: 15px; border-top: 1px solid #eee; padding-top: 15px;">
+                        <div class="calc-row">
+                            <label>回郵信封類型:</label>
+                            <select id="envelope-type" style="padding: 5px;">
+                                <option value="20">大信封 (A4不折損, 20g)</option>
+                                <option value="10">小信封 (需摺疊, 10g)</option>
+                            </select>
+                        </div>
+                        <div class="calc-row">
+                            <label>需要彌封 (10g/個):</label>
+                            <input type="number" id="seal-count" min="0" value="0" class="calc-input">
+                        </div>
+                        <div class="calc-row">
+                            <label>郵寄方式:</label>
+                            <select id="mail-method" style="padding: 5px;">
+                                <option value="registered">掛號</option>
+                                <option value="express-reg">限時掛號 (+7元)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="fee-display-container" style="display: flex; gap: 15px; margin-top: 20px;">
+                        <div style="flex: 1; background: #fffde7; padding: 12px; border-radius: 8px; border: 1px solid var(--accent-color); text-align: center;">
+                            <span style="font-size: 0.85em; font-weight: bold; color: #b7a000;">💰 匯票金額 (工本費)</span><br>
+                            <span id="money-order-total" style="font-size: 1.4em; font-weight: bold;">0</span> 元
+                        </div>
+                        <div style="flex: 1; background: #e0f2ff; padding: 12px; border-radius: 8px; border: 1px solid var(--primary-color); text-align: center;">
+                            <span style="font-size: 0.85em; font-weight: bold; color: var(--primary-color);">✉️ 回郵郵資 (貼郵票)</span><br>
+                            <span id="stamp-total" style="font-size: 1.4em; font-weight: bold;">0</span> 元
+                        </div>
+                    </div>
+                    <p style="font-size: 0.85em; color: #666; margin-top: 15px; text-align: center;">預估總重：<span id="total-weight">0</span>g。請依重量貼足郵資。</p>
+                </div>
+            </div>
             
             <div class="mail-rule-box">
-                <h4>✉️ 郵寄申請共通規則 (適用此文件)</h4>
+                <h4>✉️ 郵寄申請共通規則</h4>
                 <ul>
                     <li>必備文件：申請書、身分證正反面影印本。</li>
-                    <li>費用支付：請使用郵政匯票支付工本費 (抬頭：國立臺中科技大學)。</li>
+                    <li>費用支付：請使用**郵政匯票**支付工本費 (抬頭：**國立臺中科技大學**)。</li>
                     <li>回件信封：請自附已貼足郵資的掛號回郵信封。</li>
                     <li><strong style="color: red;">特殊限制：</strong> <span id="mailRestriction"></span></li>
                 </ul>
@@ -93,168 +139,117 @@
     </div>
 
     <script>
-        // 文件的靜態資料庫 (JSON 結構) - 根據您提供的圖表資料新增項目
         const documentData = {
-            // --- 中文文件 ---
             chinese_transcript: {
                 title: "中文歷年成績單申請 (含排名/不含排名)",
                 restriction: "無特殊郵寄限制。若需排名，需至繳費機選擇「推甄用成績單」，班排、系排需分開申請。工本費 $10/份。",
-                content: `
-                    <h4>申請流程：</h4>
-                    <ul class="step-list">
-                        <li>費用： $10/份。</li>
-                        <li>臨櫃/郵寄： 臨櫃辦理者可至自動繳費機繳費後立刻取件。</li>
-                        <li>等待時間： 一般情況立刻取件。</li>
-                    </ul>
-                `
+                content: `<ul class="step-list"><li>費用：$10/份。</li><li>等待時間：立刻取件。</li></ul>`
             },
             in_school: {
                 title: "中文在學證明書申請",
-                restriction: "僅供在學生辦理，並以當學期在學證明為主。工本費 $10/份。",
-                content: `
-                    <h4>申請流程：</h4>
-                    <ul class="step-list">
-                        <li>申請時機： 須於學期學雜費已繳交且已銷帳後始可申請。</li>
-                        <li>申請方式： 三民校區可利用自動繳費機，繳費後即可立即取件。</li>
-                        <li>費用： $10/份。</li>
-                        <li>等待時間： 立刻取件。</li>
-                    </ul>
-                `
+                restriction: "無法郵寄取件，請臨櫃辦理。工本費 $10/份。",
+                content: `<ul class="step-list"><li>條件：須學雜費已繳交且已銷帳方可申請。</li><li>方式：利用自動繳費機繳費後立即取件。</li></ul>`
             },
             degree_copy: {
-                title: "學位(畢業)證書影本申請 (中文版)",
-                restriction: "若僅申請影本，可郵寄。請注意：須帶正本由註冊組影印送文書組用印。工本費 $10/份。",
-                content: `
-                    <h4>申請流程：</h4>
-                    <ul class="step-list">
-                        <li>必備資料： 需攜帶學位(畢業)證書正本，由註冊組影印。自行影印者，註冊組不負責蓋章。</li>
-                        <li>費用： $10/份。</li>
-                        <li>等待時間： 半個工作日 (三民校區) / 一個工作日 (民生校區)。</li>
-                    </ul>
-                `
-            },
-            chinese_degree_cert: {
-                title: "中文學位證明書申請 (限正本遺失者)",
-                restriction: "無法以郵寄方式領取！限正本遺失者申請，完成申請程序後正本失去效力 (每次限申請一份)。工本費 $100/份。",
-                content: `
-                    <h4>申請流程：</h4>
-                    <ul class="step-list">
-                        <li>用途： 僅限學位證書正本遺失者申請。</li>
-                        <li>費用： $100/份。</li>
-                        <li>等待時間： 約 3 天工作天取件。</li>
-                    </ul>
-                `
+                title: "學位(畢業)證書影本申請",
+                restriction: "若僅申請影本，可郵寄。須帶正本由註冊組影印送文書組用印。工本費 $10/份。",
+                content: `<ul class="step-list"><li>必備：學位(畢業)證書正本。</li><li>等待時間：半個~1個工作日。</li></ul>`
             },
             chinese_suspension_cert: {
                 title: "中文休學證明書申請",
                 restriction: "無特殊郵寄限制。工本費 $10/份。",
-                content: `
-                    <h4>申請流程：</h4>
-                    <ul class="step-list">
-                        <li>適用對象： 休學生。</li>
-                        <li>費用： $10/份。</li>
-                        <li>等待時間： 半天取件。</li>
-                    </ul>
-                `
+                content: `<ul class="step-list"><li>對象：休學生。</li><li>等待時間：半天取件。</li></ul>`
             },
             chinese_completion_cert: {
-                title: "中文修業證明書申請 (含歷年成績單)",
-                restriction: "無特殊郵寄限制。工本費 $10/份。",
-                content: `
-                    <h4>申請流程：</h4>
-                    <ul class="step-list">
-                        <li>適用對象： 僅退學生可申請。</li>
-                        <li>文件內容： 必須包含歷年成績單。</li>
-                        <li>費用： $10/份。</li>
-                        <li>等待時間： 半天取件。</li>
-                    </ul>
-                `
+                title: "中文修業證明書申請 (含成績單)",
+                restriction: "僅退學生可申請。工本費 $10/份。",
+                content: `<ul class="step-list"><li>備註：必須包含歷年成績單。</li><li>等待時間：半天取件。</li></ul>`
             },
-            
-            // --- 英文文件 ---
+            chinese_degree_cert: {
+                title: "補發中文學位證明書",
+                restriction: "無法郵寄領取！限正本遺失者申請。工本費 $100/份。",
+                content: `<ul class="step-list"><li>注意：申請後原正本失效。</li><li>等待時間：約3天工作天。</li></ul>`
+            },
             english_transcript: {
-                title: "英文歷年成績單申請 (可彌封/不彌封)",
-                restriction: "無特殊郵寄限制。申請英文文件者請依護照填寫並檢附護照影本。工本費 $10/份。",
-                content: `
-                    <h4>申請流程：</h4>
-                    <ul class="step-list">
-                        <li>必備資料： 需檢附護照影本。</li>
-                        <li>彌封： 申請時須告知是否需要彌封。</li>
-                        <li>費用： $10/份。</li>
-                        <li>等待時間： 約 3 天工作天取件。</li>
-                    </ul>
-                `
-            },
-            english_degree_cert: {
-                title: "英文學位證明書申請 (可彌封/不彌封)",
-                restriction: "無特殊郵寄限制。申請英文文件者請依護照填寫並檢附護照影本。工本費 $100/份。",
-                content: `
-                    <h4>申請流程：</h4>
-                    <ul class="step-list">
-                        <li>費用： $100/份。</li>
-                        <li>必備資料： 需檢附護照影本。</li>
-                        <li>等待時間： 約 3 天工作天取件。</li>
-                    </ul>
-                `
+                title: "英文歷年成績單申請",
+                restriction: "須附護照影本確認姓名。工本費 $10/份。",
+                content: `<ul class="step-list"><li>等待時間：約3天工作天。</li></ul>`
             },
             english_in_school: {
                 title: "英文在學證明書申請",
-                restriction: "無法郵寄取件，請臨櫃辦理。申請英文文件者請依護照填寫並檢附護照影本。工本費 $10/份。",
-                content: `
-                    <h4>申請流程：</h4>
-                    <ul class="step-list">
-                        <li>申請時機： 須於學期學雜費已繳交且已銷帳後始可申請。</li>
-                        <li>費用： $10/份。</li>
-                        <li>等待時間： 約 3 天工作天取件。</li>
-                    </ul>
-                `
+                restriction: "無法郵寄取件，請臨櫃辦理。工本費 $10/份。",
+                content: `<ul class="step-list"><li>等待時間：約3天工作天。</li></ul>`
             },
             english_suspension_cert: {
                 title: "英文休學證明書申請",
-                restriction: "無特殊郵寄限制。申請英文文件者請依護照填寫並檢附護照影本。工本費 $10/份。",
-                content: `
-                    <h4>申請流程：</h4>
-                    <ul class="step-list">
-                        <li>適用對象： 休學生。</li>
-                        <li>費用： $10/份。</li>
-                        <li>等待時間： 約 3 天工作天取件。</li>
-                    </ul>
-                `
+                restriction: "須附護照影本。工本費 $10/份。",
+                content: `<ul class="step-list"><li>等待時間：約3天工作天。</li></ul>`
             },
             english_completion_cert: {
-                title: "英文修業證明書申請 (含歷年成績單)",
-                restriction: "無特殊郵寄限制。僅退學生可申請。申請英文文件者請依護照填寫並檢附護照影本。工本費 $10/份。",
-                content: `
-                    <h4>申請流程：</h4>
-                    <ul class="step-list">
-                        <li>適用對象： 僅退學生可申請。</li>
-                        <li>文件內容： 必須包含歷年成績單。</li>
-                        <li>費用： $10/份。</li>
-                        <li>等待時間： 約 3 天工作天取件。</li>
-                    </ul>
-                `
+                title: "英文修業證明書申請",
+                restriction: "僅退學生可申請。工本費 $10/份。",
+                content: `<ul class="step-list"><li>等待時間：約3天工作天。</li></ul>`
+            },
+            english_degree_cert: {
+                title: "英文學位證明書申請",
+                restriction: "須附護照影本。工本費 $100/份。",
+                content: `<ul class="step-list"><li>等待時間：約3天工作天。</li></ul>`
             }
         };
 
         function showDocumentDetail(key) {
             const data = documentData[key];
             if (!data) return;
-
             document.getElementById('modalTitle').textContent = data.title;
             document.getElementById('modalBody').innerHTML = data.content;
             document.getElementById('mailRestriction').textContent = data.restriction; 
+            resetCalculator();
             document.getElementById('documentModal').style.display = 'block';
         }
 
-        function closeModal() {
-            document.getElementById('documentModal').style.display = 'none';
+        function closeModal() { document.getElementById('documentModal').style.display = 'none'; }
+        window.onclick = function(event) { if (event.target == document.getElementById('documentModal')) closeModal(); }
+
+        document.querySelectorAll('.calc-input, #envelope-type, #seal-count, #mail-method').forEach(el => {
+            el.addEventListener('input', calculatePreciseFees);
+        });
+
+        function resetCalculator() {
+            document.querySelectorAll('.calc-input').forEach(i => i.value = 0);
+            document.getElementById('seal-count').value = 0;
+            document.getElementById('envelope-type').selectedIndex = 0;
+            document.getElementById('mail-method').selectedIndex = 0;
+            calculatePreciseFees();
         }
 
-        window.onclick = function(event) {
-            const modal = document.getElementById('documentModal');
-            if (event.target == modal) {
-                closeModal();
+        function calculatePreciseFees() {
+            let price = 0, weight = 0;
+            document.querySelectorAll('.calc-input').forEach(i => {
+                const count = parseInt(i.value) || 0;
+                price += count * parseInt(i.dataset.price);
+                weight += count * parseInt(i.dataset.weight);
+            });
+
+            weight += parseInt(document.getElementById('envelope-type').value) || 0;
+            weight += (parseInt(document.getElementById('seal-count').value) || 0) * 10;
+
+            let baseFee = 0;
+            if (weight > 0) {
+                if (weight <= 20) baseFee = 28;
+                else if (weight <= 50) baseFee = 36;
+                else if (weight <= 100) baseFee = 44;
+                else if (weight <= 250) baseFee = 60;
+                else if (weight <= 500) baseFee = 92;
+                else if (weight <= 1000) baseFee = 132;
+                else baseFee = 180;
             }
+
+            const isExpress = document.getElementById('mail-method').value === 'express-reg';
+            const finalStamp = (baseFee > 0) ? baseFee + (isExpress ? 7 : 0) : 0;
+
+            document.getElementById('money-order-total').textContent = price;
+            document.getElementById('stamp-total').textContent = finalStamp;
+            document.getElementById('total-weight').textContent = weight;
         }
     </script>
 </body>
