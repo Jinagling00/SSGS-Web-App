@@ -54,9 +54,9 @@
         </div>
 
         <h2 class="document-group-title">⚖️ 郵寄費用精算工具</h2>
-        <div class="result-box" style="border: 2px solid var(--primary-color); background-color: #fff; padding: 25px; margin-top: 10px;">
-            <p style="font-size: 0.9em; color: #666; margin-bottom: 20px;">請輸入欲申請的份數，系統將依據重量級距預估郵資。</p>
-            <div id="calculator-form" style="text-align: left; font-size: 0.95em;">
+        <div class="result-box">
+            <p style="font-size: 0.9em; color: #666; margin-bottom: 20px;">請輸入欲申請份數，系統將依據重量級距預估郵資。</p>
+            <div id="calculator-form">
                 <div class="calc-row"><label>中文成績/在學/休學/修業 ($10, 5g):</label><input type="number" class="calc-input" data-price="10" data-weight="5" min="0" value="0"></div>
                 <div class="calc-row"><label>中/英文學位證明書 ($100, 15g):</label><input type="number" class="calc-input" data-price="100" data-weight="15" min="0" value="0"></div>
                 <div class="calc-row"><label>英文歷年成績單 ($10, 25g):</label><input type="number" class="calc-input" data-price="10" data-weight="25" min="0" value="0"></div>
@@ -81,15 +81,6 @@
             </div>
         </div>
         
-        <div class="mail-rule-box">
-            <h4>✉️ 郵寄申請共通規則</h4>
-            <ul>
-                <li>必備文件：申請書、身分證正反面影印本。</li>
-                <li>費用支付：請使用**郵政匯票**支付工本費 (抬頭：**國立臺中科技大學**)。</li>
-                <li>回件信封：請自附已貼足郵資的掛號回郵信封。</li>
-            </ul>
-        </div>
-        
         <a href="/SSGS-Web-App/service_menu.html" class="option-button back-to-home-btn">&larr; 返回服務選單</a>
     </div>
 
@@ -98,6 +89,16 @@
             <span class="close-btn" onclick="closeModal()">&times;</span>
             <h2 id="modalTitle" style="color: var(--primary-color); margin-top: 0;"></h2>
             <div id="modalBody"></div>
+            
+            <div class="mail-rule-box">
+                <h4>✉️ 郵寄申請共通規則 (適用此文件)</h4>
+                <ul style="padding-left: 20px; font-size: 0.95em;">
+                    <li>必備文件：申請書、身分證正反面影印本。</li>
+                    <li>費用支付：請使用**郵政匯票**支付工本費 (抬頭：**國立臺中科技大學**)。</li>
+                    <li>回件信封：請自附已貼足郵資的掛號回郵信封。</li>
+                    <li><strong style="color: red;">特殊限制：</strong> <span id="mailRestriction"></span></li>
+                </ul>
+            </div>
         </div>
     </div>
 
@@ -105,47 +106,58 @@
         const documentData = {
             chinese_transcript: {
                 title: "中文歷年成績單申請 (含排名/不含排名)",
-                content: `<ul class="step-list"><li>費用：$10/份。</li><li>臨櫃辦理：可至自動繳費機繳費後立刻取件。</li><li>備註：若需排名，需至繳費機選擇「推甄用成績單」，班排、系排需分開申請。</li></ul>`
+                restriction: "無特殊郵寄限制。若需排名，需至繳費機選擇「推甄用成績單」，班排、系排需分開申請。",
+                content: `<ul class="step-list"><li>工本費：$10/份。</li><li>取件：立刻取件 (三民校區自動繳費機)。</li></ul>`
             },
             in_school: {
                 title: "中文在學證明書申請",
-                content: `<ul class="step-list"><li>條件：須學雜費已繳交且已銷帳方可申請。</li><li>工本費：$10/份。</li><li>方式：利用三民校區自動繳費機，繳費後即可立即取件。</li></ul>`
+                restriction: "無法郵寄取件，請臨櫃辦理。僅供在學生辦理，並以當學期在學證明為主。",
+                content: `<ul class="step-list"><li>條件：須學雜費已繳交且已銷帳方可申請。</li><li>工本費：$10/份。</li><li>取件：利用自動繳費機繳費後立即取件。</li></ul>`
             },
             degree_copy: {
-                title: "學位(畢業)證書影本申請",
-                content: `<ul class="step-list"><li>必備：學位(畢業)證書正本。</li><li>流程：須帶正本由註冊組影印送文書組用印，自行影印者註冊組不負責蓋章。</li><li>等待時間：半個~1個工作日。</li></ul>`
+                title: "學位(畢業)證書影本申請 (中文版)",
+                restriction: "若僅申請影本，可郵寄。須帶正本由註冊組影印送文書組用印。",
+                content: `<ul class="step-list"><li>工本費：$10/份。</li><li>必備：學位(畢業)證書正本。</li><li>時程：半個至一個工作日。</li></ul>`
             },
             chinese_suspension_cert: {
                 title: "中文休學證明書申請",
-                content: `<ul class="step-list"><li>對象：休學生。</li><li>費用：$10/份。</li><li>等待時間：約半天取件。</li></ul>`
+                restriction: "無特殊郵寄限制。",
+                content: `<ul class="step-list"><li>對象：休學生。</li><li>工本費：$10/份。</li><li>取件：約半天取件。</li></ul>`
             },
             chinese_completion_cert: {
                 title: "中文修業證明書申請 (含成績單)",
-                content: `<ul class="step-list"><li>對象：僅退學生可申請。</li><li>文件：內容必須包含歷年成績單。</li><li>等待時間：約半天取件。</li></ul>`
+                restriction: "無特殊郵寄限制。僅退學生可申請。",
+                content: `<ul class="step-list"><li>工本費：$10/份。</li><li>備註：內容必須包含歷年成績單。</li><li>取件：約半天取件。</li></ul>`
             },
             chinese_degree_cert: {
-                title: "補發中文學位證明書",
-                content: `<ul class="step-list"><li>工本費：$100/份。</li><li>限制：無法郵遞領取，且申請後原正本失效。</li><li>等待時間：約 3 個工作天。</li></ul>`
+                title: "補發中文學位證明書 (限正本遺失者)",
+                restriction: "無法郵遞領取！限正本遺失者申請，申請後原正本失效。",
+                content: `<ul class="step-list"><li>工本費：$100/份。</li><li>時程：約 3 個工作天。</li></ul>`
             },
             english_transcript: {
-                title: "英文歷年成績單申請",
-                content: `<ul class="step-list"><li>工本費：$10/份。</li><li>必備：須檢附護照影本確認姓名。</li><li>等待時間：約 3 個工作天。</li></ul>`
+                title: "英文歷年成績單申請 (可彌封/不彌封)",
+                restriction: "無特殊郵寄限制。須附護照影本以利核對姓名。",
+                content: `<ul class="step-list"><li>工本費：$10/份。</li><li>彌封：申請時請告知是否需要彌封。</li><li>時程：約 3 個工作天。</li></ul>`
             },
             english_in_school: {
                 title: "英文在學證明書申請",
-                content: `<ul class="step-list"><li>工本費：$10/份。</li><li>限制：無法郵寄取件，請臨櫃辦理。</li><li>必備：須檢附護照影本。</li></ul>`
+                restriction: "無法郵寄取件，請臨櫃辦理。須附護照影本。",
+                content: `<ul class="step-list"><li>工本費：$10/份。</li><li>時程：約 3 個工作天。</li></ul>`
             },
             english_suspension_cert: {
                 title: "英文休學證明書申請",
-                content: `<ul class="step-list"><li>工本費：$10/份。</li><li>必備：須檢附護照影本。</li><li>等待時間：約 3 個工作天。</li></ul>`
+                restriction: "無特殊郵寄限制。須附護照影本。",
+                content: `<ul class="step-list"><li>工本費：$10/份。</li><li>時程：約 3 個工作天。</li></ul>`
             },
             english_completion_cert: {
                 title: "英文修業證明書申請",
-                content: `<ul class="step-list"><li>工本費：$10/份。</li><li>對象：僅退學生可申請。</li><li>等待時間：約 3 個工作天。</li></ul>`
+                restriction: "無特殊郵寄限制。僅退學生可申請。",
+                content: `<ul class="step-list"><li>工本費：$10/份。</li><li>時程：約 3 個工作天。</li></ul>`
             },
             english_degree_cert: {
                 title: "英文學位證明書申請",
-                content: `<ul class="step-list"><li>工本費：$100/份。</li><li>必備：須檢附護照影本。</li><li>等待時間：約 3 個工作天。</li></ul>`
+                restriction: "無特殊郵寄限制。須附護照影本。",
+                content: `<ul class="step-list"><li>工本費：$100/份。</li><li>時程：約 3 個工作天。</li></ul>`
             }
         };
 
@@ -154,6 +166,7 @@
             if (!data) return;
             document.getElementById('modalTitle').textContent = data.title;
             document.getElementById('modalBody').innerHTML = data.content;
+            document.getElementById('mailRestriction').textContent = data.restriction; 
             document.getElementById('documentModal').style.display = 'block';
         }
 
@@ -163,27 +176,19 @@
         // --- 核心計算邏輯 ---
         document.addEventListener('DOMContentLoaded', function() {
             const inputs = document.querySelectorAll('.calc-input, #envelope-type, #seal-count, #mail-method');
-            inputs.forEach(el => {
-                el.addEventListener('input', calculatePreciseFees);
-            });
+            inputs.forEach(el => el.addEventListener('input', calculatePreciseFees));
             calculatePreciseFees();
         });
 
         function calculatePreciseFees() {
-            let price = 0;
-            let weight = 0;
-            const docInputs = document.querySelectorAll('.calc-input');
-            docInputs.forEach(i => {
+            let price = 0, weight = 0;
+            document.querySelectorAll('.calc-input').forEach(i => {
                 const count = Number(i.value) || 0;
-                const unitPrice = Number(i.getAttribute('data-price')) || 0;
-                const unitWeight = Number(i.getAttribute('data-weight')) || 0;
-                price += count * unitPrice;
-                weight += count * unitWeight;
+                price += count * Number(i.getAttribute('data-price'));
+                weight += count * Number(i.getAttribute('data-weight'));
             });
-
-            const envWeight = Number(document.getElementById('envelope-type').value) || 0;
-            const sealWeight = (Number(document.getElementById('seal-count').value) || 0) * 10;
-            weight += envWeight + sealWeight;
+            weight += Number(document.getElementById('envelope-type').value);
+            weight += (Number(document.getElementById('seal-count').value) || 0) * 10;
 
             let baseFee = 0;
             if (weight > 0) {
@@ -195,9 +200,8 @@
                 else if (weight <= 1000) baseFee = 132;
                 else baseFee = 180;
             }
-
-            const mailMethod = document.getElementById('mail-method').value;
-            const finalStamp = (baseFee > 0) ? baseFee + (mailMethod === 'express-reg' ? 7 : 0) : 0;
+            const isExpress = document.getElementById('mail-method').value === 'express-reg';
+            const finalStamp = (baseFee > 0) ? baseFee + (isExpress ? 7 : 0) : 0;
 
             document.getElementById('money-order-total').textContent = isNaN(price) ? 0 : price;
             document.getElementById('stamp-total').textContent = isNaN(finalStamp) ? 0 : finalStamp;
