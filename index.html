@@ -3,20 +3,57 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>註冊組自我服務指引系統</title>
+    <title>註冊組自我服務指引系統 (SSGS)</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/SSGS-Web-App/styles.css">
+    <link rel="stylesheet" href="/SSGS-Web-App/styles.css"> 
+    <style>
+        /* 僅針對 index 頁面進行微調，確保輸入框樣式符合要求 */
+        .input-group {
+            margin-bottom: 30px;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+        
+        /* 核心樣式：純輸入欄 */
+        #studentId {
+            width: calc(100% - 24px);
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1.1em;
+            transition: border-color 0.3s;
+            /* 移除預設的數字輸入框樣式 */
+            -moz-appearance: textfield; 
+            appearance: textfield;
+        }
+
+        #studentId:focus {
+            border-color: var(--primary-color);
+            outline: none;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
-        <h1>📑 註冊組自我服務指引系統</h1>
-        <p>請輸入您的學號進行身份初步辨識，以確保您使用正確的指引服務。</p>
+        <h1 style="display: flex; align-items: center; justify-content: center; border-bottom: none; padding-bottom: 0;">
+            <span style="font-size: 2em; margin-right: 10px;">📄</span>
+            註冊組自我服務指引系統
+        </h1>
+        <p style="border-bottom: 3px solid var(--accent-color); padding-bottom: 5px; display: inline-block;">
+            請輸入您的**學號**進行身份初步辨識，以確保您使用正確的指引服務。
+        </p>
         
         <div class="input-group">
             <label for="studentId">您的學號：</label>
-            <input type="number" id="studentId" placeholder="請輸入學號，例如: 1XXXXXXXX" required>
+            <input type="text" id="studentId" placeholder="請輸入學號，例如: 1XXXXXXXXX (10碼)" required maxlength="10">
         </div>
         
         <button class="decision-button" onclick="checkStudentId()">
