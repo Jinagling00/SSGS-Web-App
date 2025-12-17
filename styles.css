@@ -70,13 +70,15 @@ h1 {
 
 /* service_menu.html 下方的返回按鈕修正 */
 .back-to-home-btn {
-    display: block !important;    /* 強制轉為區塊元素，這是置中的關鍵 */
-    width: 90%;                  /* 在手機端保持適當寬度 */
-    max-width: 300px;            /* 限制最大寬度防止在平板上過長 */
-    margin: 30px auto !important; /* 透過 auto 左右邊距實現水平置中 */
-    text-align: center;          /* 確保文字在按鈕內也置中 */
-    padding: 12px 20px;
-    box-sizing: border-box;      /* 防止 padding 撐破寬度 */
+    display: block !important;    /* 關鍵：轉為區塊元素方可使用 margin: auto 置中 */
+    width: 85% !important;       /* 在手機端設定一個具體寬度，而非 100% */
+    max-width: 320px !important; /* 限制最大寬度，避免在大螢幕手機上過長 */
+    margin-left: auto !important;
+    margin-right: auto !important;
+    margin-top: 30px !important;
+    text-align: center;
+    padding: 12px 0;             /* 增加垂直高度，更易點擊 */
+    box-sizing: border-box;      /* 確保 padding 不會撐破預設寬度 */
 }
 
 /* 確保 general button 樣式不影響 a 標籤導覽卡片 */
@@ -195,29 +197,54 @@ h1 {
 /* 確保小螢幕上退回單欄 */
 /* --- 媒體查詢：針對手機螢幕優化 --- */
 @media (max-width: 600px) {
-    h1 {
-        font-size: 1.5em; /* 縮小標題字體 */
+    /* 1. 容器調整：減少內距防止擠壓按鈕 */
+    .container {
+        padding: 20px 15px !important;
+        width: 95% !important;
+        box-sizing: border-box;
     }
 
+    h1 {
+        font-size: 1.4em; 
+        text-align: center;
+    }
+
+    /* 2. 服務選單：改為 Flex 垂直排列並強制置中 */
     .service-grid {
-        display: flex;
-        flex-direction: column;
-        align-items: center;    /* 確保所有服務卡片在手機上也是置中的 */
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important; 
+        gap: 15px;
     }
     
     .service-card {
-        width: 100%;
-        max-width: 350px;       /* 限制卡片寬度，讓手機版畫面更精緻 */
+        width: 100% !important;
+        max-width: 320px; /* 限制卡片寬度，視覺更集中 */
+        box-sizing: border-box;
     }
 
+    /* 3. 文件卡片佈局調整 */
     .document-grid {
-        grid-template-columns: 1fr; /* 文件卡片改為單欄佈局 */
+        grid-template-columns: 1fr !important;
+        gap: 15px;
     }
 
-    /* 手機端按鈕字體微調 */
-    .option-button, .decision-button {
-        padding: 12px 20px;
+    /* 4. 關鍵修正：返回按鈕徹底置中 */
+    .back-to-home-btn {
+        display: block !important;    /* 必須轉為 block 才能用 auto margin */
+        width: 90% !important;       /* 給定寬度 */
+        max-width: 300px !important; /* 限制最大寬度 */
+        margin: 30px auto !important; /* 左右 auto 實現物理置中 */
+        float: none !important;      /* 移除任何可能的浮動 */
+        padding: 12px 0;
         font-size: 1em;
+        box-sizing: border-box;
+    }
+
+    /* 5. 通用按鈕微調 */
+    .option-button, .decision-button {
+        font-size: 1em;
+        padding: 12px 10px;
     }
 }
 
