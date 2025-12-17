@@ -70,11 +70,13 @@ h1 {
 
 /* service_menu.html 下方的返回按鈕修正 */
 .back-to-home-btn {
-    width: 100%;       /* 在手機端預設佔滿 */
-    max-width: 300px;  /* 但限制最大寬度防止太長 */
-    margin: 30px auto !important; /* auto 確保水平置中 */
-    display: block;    /* 必須是區塊元素才能置中 */
-    text-align: center;
+    display: block !important;    /* 強制轉為區塊元素，這是置中的關鍵 */
+    width: 90%;                  /* 在手機端保持適當寬度 */
+    max-width: 300px;            /* 限制最大寬度防止在平板上過長 */
+    margin: 30px auto !important; /* 透過 auto 左右邊距實現水平置中 */
+    text-align: center;          /* 確保文字在按鈕內也置中 */
+    padding: 12px 20px;
+    box-sizing: border-box;      /* 防止 padding 撐破寬度 */
 }
 
 /* 確保 general button 樣式不影響 a 標籤導覽卡片 */
@@ -198,8 +200,14 @@ h1 {
     }
 
     .service-grid {
-        grid-template-columns: 1fr; /* 服務選單改為單欄佈局 */
-        gap: 15px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;    /* 確保所有服務卡片在手機上也是置中的 */
+    }
+    
+    .service-card {
+        width: 100%;
+        max-width: 350px;       /* 限制卡片寬度，讓手機版畫面更精緻 */
     }
 
     .document-grid {
