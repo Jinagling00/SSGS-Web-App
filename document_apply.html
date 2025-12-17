@@ -94,8 +94,8 @@
                 <h4>✉️ 郵寄申請共通規則 (適用此文件)</h4>
                 <ul style="padding-left: 20px; font-size: 0.95em;">
                     <li>必備文件：申請書、身分證正反面影印本。</li>
-                    <li>費用支付：請使用**郵政匯票**支付工本費 (抬頭：**國立臺中科技大學**)。</li>
-                    <li>回件信封：請自附已貼足郵資的掛號回郵信封。</li>
+                    <li>費用支付：請使用郵政匯票支付工本費 (抬頭：國立臺中科技大學)。</li>
+                    <li>回件信封：請自附已貼足郵資的掛號回郵信封(可使用郵寄費用精算工具)。</li>
                     <li><strong style="color: red;">特殊限制：</strong> <span id="mailRestriction"></span></li>
                 </ul>
             </div>
@@ -106,13 +106,13 @@
         const documentData = {
             chinese_transcript: {
                 title: "中文歷年成績單申請 (含排名/不含排名)",
-                restriction: "無特殊郵寄限制。若需排名，需至繳費機選擇「推甄用成績單」，班排、系排需分開申請。",
-                content: `<ul class="step-list"><li>工本費：$10/份。</li><li>取件：立刻取件 (三民校區自動繳費機)。</li></ul>`
+                restriction: "無特殊郵寄限制。在校生排名需至繳費機選擇「推甄用成績單」，班排、系排需分開申請。",
+                content: `<ul class="step-list"><li>工本費：$10/份。</li><li>取件：立刻取件 (三民校區自動繳費機)。休退學生請持收據至註冊組取件。</li></ul>`
             },
             in_school: {
                 title: "中文在學證明書申請",
-                restriction: "無法郵寄取件，請臨櫃辦理。僅供在學生辦理，並以當學期在學證明為主。",
-                content: `<ul class="step-list"><li>條件：須學雜費已繳交且已銷帳方可申請。</li><li>工本費：$10/份。</li><li>取件：利用自動繳費機繳費後立即取件。</li></ul>`
+                restriction: "僅供在學生辦理，並以當學期在學證明為主。",
+                content: `<ul class="step-list"><li>條件：須學雜費已繳交且已銷帳方可申請，開學兩週內請持繳費收據至註冊組人工銷帳再至機台列印在學證明。</li><li>工本費：$10/份。</li><li>取件：利用自動繳費機繳費後立即取件。</li></ul>`
             },
             degree_copy: {
                 title: "學位(畢業)證書影本申請 (中文版)",
@@ -131,17 +131,18 @@
             },
             chinese_degree_cert: {
                 title: "補發中文學位證明書 (限正本遺失者)",
-                restriction: "無法郵遞領取！限正本遺失者申請，申請後原正本失效。",
+                restriction: "無法郵遞領取！限正本遺失者申請，申請後原正本失效，且用紙用詞不同於原畢業證書。",
                 content: `<ul class="step-list"><li>工本費：$100/份。</li><li>時程：約 3 個工作天。</li></ul>`
             },
+            <p>※英文相關文件作業時間：三天取件；92 年前畢業者作業時間：七天取件。</p>
             english_transcript: {
                 title: "英文歷年成績單申請 (可彌封/不彌封)",
                 restriction: "無特殊郵寄限制。須附護照影本以利核對姓名。",
-                content: `<ul class="step-list"><li>工本費：$10/份。</li><li>彌封：申請時請告知是否需要彌封。</li><li>時程：約 3 個工作天。</li></ul>`
+                content: `<ul class="step-list"><li>工本費：$10/份。</li><li>彌封：申請時請告知是否需要彌封，是否需分開彌封。</li><li>時程：約 3 個工作天。</li></ul>`
             },
             english_in_school: {
                 title: "英文在學證明書申請",
-                restriction: "無法郵寄取件，請臨櫃辦理。須附護照影本。",
+                restriction: "限在學生申請，須附護照影本。",
                 content: `<ul class="step-list"><li>工本費：$10/份。</li><li>時程：約 3 個工作天。</li></ul>`
             },
             english_suspension_cert: {
@@ -151,13 +152,18 @@
             },
             english_completion_cert: {
                 title: "英文修業證明書申請",
-                restriction: "無特殊郵寄限制。僅退學生可申請。",
+                restriction: "無特殊郵寄限制。僅退學生可申請。須附護照影本。",
                 content: `<ul class="step-list"><li>工本費：$10/份。</li><li>時程：約 3 個工作天。</li></ul>`
             },
             english_degree_cert: {
-                title: "英文學位證明書申請",
+                title: "英文學位證明書申請(可彌封/不彌封)",
                 restriction: "無特殊郵寄限制。須附護照影本。",
                 content: `<ul class="step-list"><li>工本費：$100/份。</li><li>時程：約 3 個工作天。</li></ul>`
+            }
+            english_degree_cert: {
+                title: "英文畢業證明書申請",
+                restriction: "無特殊郵寄限制。須附護照影本。92年以前畢業生請申請英文畢業證明書(工本費$10元)",
+                content: `<ul class="step-list"><li>工本費：$10/份。</li><li>時程：約 7 個工作天。</li></ul>`
             }
         };
 
