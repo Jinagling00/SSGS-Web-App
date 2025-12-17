@@ -25,7 +25,10 @@
                 
                 <h4>必備文件清單 (依據您的學籍狀態)</h4>
                 <ul id="requiredDocsList">
-                    <li>休/退學申請書 (一式兩份，可至註冊組領取或表單下載處下載)</li>
+                    <li><a href="/SSGS-Web-App/forms/國立臺中科技大學(休、退、復)學申請書.pdf" download style="color: var(--primary-color); font-weight: bold;">
+            《(休、退、復)學申請書》</a> (B4尺寸)</li>
+                    <li><a href="/SSGS-Web-App/forms/國立臺中科技大學(休、退、復)學申請書(民生校區).pdf" download style="color: var(--primary-color); font-weight: bold;">
+            《(休、退、復)學申請書(護理、美容、老服系用)》</a> (B4尺寸)</li>
                     <li>學生證 (如遺失須先線上掛失並於申請書上註明，由學生自行負責)</li>
                     </ul>
 
@@ -70,7 +73,8 @@
                 // 動態插入家長同意書判斷
                 if (requiresConsent) {
                     const consentItem = document.createElement('li');
-                    consentItem.innerHTML = `家長或監護人同意書 <span style="color: red;">(因您是 ${studentLevel}，此為必備文件)</span>`;
+                    consentItem.innerHTML = `<a href="/SSGS-Web-App/forms/國立臺中科技大學(休、退)學家長同意書.pdf" download style="color: var(--primary-color); font-weight: bold;">
+            《(休、退)學家長同意書》</a> <span style="color: red;">(因您是 ${studentLevel}，此為必備文件)</span>`;
                     requiredDocsList.appendChild(consentItem);
                 } else {
                     const noteItem = document.createElement('li');
