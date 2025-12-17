@@ -58,36 +58,25 @@
 
     <script src="/SSGS-Web-App/app.js"></script> 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const urlParams = new URLSearchParams(window.location.search);
-            const studentLevel = urlParams.get('level');
-            const requiresConsent = urlParams.get('consent') === 'true'; 
-
-            document.getElementById('loadingInfo').style.display = 'none';
-            
-            const requiredDocsList = document.getElementById('requiredDocsList');
-            const studentLevelDisplay = document.getElementById('studentLevelDisplay');
-
-            if (studentLevel && studentLevelDisplay) {
-                studentLevelDisplay.textContent = studentLevel;
-                
-                // 動態插入家長同意書判斷
-                if (requiresConsent) {
-                    const consentItem = document.createElement('li');
-                    consentItem.innerHTML = `**家長或監護人同意書** <span style="color: red;">(因您是 **${studentLevel}**，此為必備文件)</span>`;
-                    requiredDocsList.appendChild(consentItem);
-                } else {
-                    const noteItem = document.createElement('li');
-                    noteItem.innerHTML = `<strong style="color: green;">無需</strong> 繳交家長或監護人同意書 (因您是 ${studentLevel} 層級)。`;
-                    requiredDocsList.appendChild(noteItem);
-                }
-
-                document.getElementById('guideContent').style.display = 'block';
-            } else {
-                document.getElementById('guideContent').innerHTML = '<p style="color: red;">身份資訊遺失，請返回首頁重新輸入學號。</p>';
-                document.getElementById('guideContent').style.display = 'block';
-            }
-        });
-    </script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const studentId = urlParams.get('id');
+        const studentLevel = urlParams.get('level');
+        const requiresConsent = urlParams.get('consent');
+        
+        const withdrawalLink = document.querySelector('a[href="/SSGS-Web-App/withdrawal_guide.html"]');
+        
+        // 如果參數存在，動態修改連結
+        if (studentId && studentLevel) {
+            withdrawalLink.href = `/SSGS-Web-App/withdrawal_guide.html?id=${studentId}&level=${studentLevel}&consent=${requiresConsent}`;
+        }
+        
+        // 可選：顯示已辨識身份
+        const userInfo = document.getElementById('userInfo');
+        if (userInfo && studentLevel) {
+             userInfo.innerHTML = `<p style="color: var(--primary-color); font-weight: 700;">您的身份：日間部 / ${studentLevel}</p>`;
+        }
+    });
+</script>
 </body>
 </html>
