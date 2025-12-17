@@ -13,9 +13,9 @@
         .modal-content { background-color: #fefefe; margin: 5% auto; padding: 30px; border: 1px solid #888; width: 90%; max-width: 700px; border-radius: 10px; position: relative; }
         .close-btn { color: #aaa; float: right; font-size: 28px; font-weight: bold; line-height: 1; cursor: pointer; }
         .close-btn:hover { color: #000; }
-        .mail-rule-box { background-color: #fffde7; border: 2px solid var(--accent-color); padding: 15px; margin-top: 20px; border-radius: 8px; }
+        .mail-rule-box { background-color: #fffde7; border: 2px solid var(--accent-color); padding: 15px; margin-top: 20px; border-radius: 8px; text-align: left; }
         .mail-rule-box h4 { color: #b7a000; margin-top: 0; border-bottom: 1px dashed #ccc; padding-bottom: 5px; }
-        .step-list { list-style: none; padding: 0; }
+        .step-list { list-style: none; padding: 0; text-align: left; }
         .step-list li { background: #f7f7f7; padding: 10px; border-left: 4px solid var(--primary-color); margin-bottom: 8px; font-size: 0.95em; }
         .document-group-title { margin-top: 40px; margin-bottom: 10px; border-left: 5px solid var(--accent-color); padding-left: 10px; text-align: left; color: var(--primary-color); }
         
@@ -29,8 +29,8 @@
         <h1>📄 流程 A：申請文件查詢</h1>
         <p>所有文件申請請使用《日間部註冊組各項證明申請書》。請點擊卡片查看詳細步驟。</p>
         
-        <div style="margin-bottom: 20px;">
-            <a href="/SSGS-Web-App/forms/國立臺中科技大學日間部註冊組各項證明申請書.pdf" download class="option-button" style="background-color: #e0f2ff; color: #00478F; border: 1px solid #00478F; display: inline-block; width: auto; padding: 10px 20px; margin-right: 10px;">📥 下載《各項證明申請書》</a>
+        <div style="margin-bottom: 20px; display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;">
+            <a href="/SSGS-Web-App/forms/國立臺中科技大學日間部註冊組各項證明申請書.pdf" download class="option-button" style="background-color: #e0f2ff; color: #00478F; border: 1px solid #00478F; display: inline-block; width: auto; padding: 10px 20px;">📥 下載《各項證明申請書》</a>
             <a href="/SSGS-Web-App/forms/國立臺中科技大學委託書.pdf" download class="option-button" style="background-color: #e0f2ff; color: #00478F; border: 1px solid #00478F; display: inline-block; width: auto; padding: 10px 20px;">📥 下載《委託書》</a>
         </div>
 
@@ -85,7 +85,7 @@
             <h4>✉️ 郵寄申請共通規則</h4>
             <ul>
                 <li>必備文件：申請書、身分證正反面影印本。</li>
-                <li>費用支付：請使用郵政匯票支付工本費 (抬頭：國立臺中科技大學)。</li>
+                <li>費用支付：請使用**郵政匯票**支付工本費 (抬頭：**國立臺中科技大學**)。</li>
                 <li>回件信封：請自附已貼足郵資的掛號回郵信封。</li>
             </ul>
         </div>
@@ -94,15 +94,59 @@
     </div>
 
     <div id="documentModal" class="modal">
-        <div class="modal-content"><span class="close-btn" onclick="closeModal()">&times;</span><h2 id="modalTitle"></h2><div id="modalBody"></div><div id="modalRestriction" style="color:red; margin-top:10px; font-weight:bold;"></div></div>
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+            <h2 id="modalTitle" style="color: var(--primary-color); margin-top: 0;"></h2>
+            <div id="modalBody"></div>
+        </div>
     </div>
 
     <script>
         const documentData = {
-            chinese_transcript: { title: "中文歷年成績單申請", content: `<ul class="step-list"><li>單件工本費：$10。</li><li>等待時間：立刻取件。</li></ul>` },
-            in_school: { title: "中文在學證明書申請", content: `<ul class="step-list"><li>條件：須學雜費已繳交且已銷帳。</li><li>工本費：$10。</li></ul>` },
-            chinese_degree_cert: { title: "補發中文學位證明書", content: `<ul class="step-list"><li>工本費：$100。</li><li>限制：無法郵遞領取。</li></ul>` },
-            english_transcript: { title: "英文歷年成績單申請", content: `<ul class="step-list"><li>必備：護照影本。</li><li>工本費：$10。</li></ul>` }
+            chinese_transcript: {
+                title: "中文歷年成績單申請 (含排名/不含排名)",
+                content: `<ul class="step-list"><li>費用：$10/份。</li><li>臨櫃辦理：可至自動繳費機繳費後立刻取件。</li><li>備註：若需排名，需至繳費機選擇「推甄用成績單」，班排、系排需分開申請。</li></ul>`
+            },
+            in_school: {
+                title: "中文在學證明書申請",
+                content: `<ul class="step-list"><li>條件：須學雜費已繳交且已銷帳方可申請。</li><li>工本費：$10/份。</li><li>方式：利用三民校區自動繳費機，繳費後即可立即取件。</li></ul>`
+            },
+            degree_copy: {
+                title: "學位(畢業)證書影本申請",
+                content: `<ul class="step-list"><li>必備：學位(畢業)證書正本。</li><li>流程：須帶正本由註冊組影印送文書組用印，自行影印者註冊組不負責蓋章。</li><li>等待時間：半個~1個工作日。</li></ul>`
+            },
+            chinese_suspension_cert: {
+                title: "中文休學證明書申請",
+                content: `<ul class="step-list"><li>對象：休學生。</li><li>費用：$10/份。</li><li>等待時間：約半天取件。</li></ul>`
+            },
+            chinese_completion_cert: {
+                title: "中文修業證明書申請 (含成績單)",
+                content: `<ul class="step-list"><li>對象：僅退學生可申請。</li><li>文件：內容必須包含歷年成績單。</li><li>等待時間：約半天取件。</li></ul>`
+            },
+            chinese_degree_cert: {
+                title: "補發中文學位證明書",
+                content: `<ul class="step-list"><li>工本費：$100/份。</li><li>限制：無法郵遞領取，且申請後原正本失效。</li><li>等待時間：約 3 個工作天。</li></ul>`
+            },
+            english_transcript: {
+                title: "英文歷年成績單申請",
+                content: `<ul class="step-list"><li>工本費：$10/份。</li><li>必備：須檢附護照影本確認姓名。</li><li>等待時間：約 3 個工作天。</li></ul>`
+            },
+            english_in_school: {
+                title: "英文在學證明書申請",
+                content: `<ul class="step-list"><li>工本費：$10/份。</li><li>限制：無法郵寄取件，請臨櫃辦理。</li><li>必備：須檢附護照影本。</li></ul>`
+            },
+            english_suspension_cert: {
+                title: "英文休學證明書申請",
+                content: `<ul class="step-list"><li>工本費：$10/份。</li><li>必備：須檢附護照影本。</li><li>等待時間：約 3 個工作天。</li></ul>`
+            },
+            english_completion_cert: {
+                title: "英文修業證明書申請",
+                content: `<ul class="step-list"><li>工本費：$10/份。</li><li>對象：僅退學生可申請。</li><li>等待時間：約 3 個工作天。</li></ul>`
+            },
+            english_degree_cert: {
+                title: "英文學位證明書申請",
+                content: `<ul class="step-list"><li>工本費：$100/份。</li><li>必備：須檢附護照影本。</li><li>等待時間：約 3 個工作天。</li></ul>`
+            }
         };
 
         function showDocumentDetail(key) {
@@ -122,28 +166,24 @@
             inputs.forEach(el => {
                 el.addEventListener('input', calculatePreciseFees);
             });
-            calculatePreciseFees(); // 初始執行
+            calculatePreciseFees();
         });
 
         function calculatePreciseFees() {
             let price = 0;
             let weight = 0;
-            
             const docInputs = document.querySelectorAll('.calc-input');
             docInputs.forEach(i => {
                 const count = Number(i.value) || 0;
                 const unitPrice = Number(i.getAttribute('data-price')) || 0;
                 const unitWeight = Number(i.getAttribute('data-weight')) || 0;
-                
                 price += count * unitPrice;
                 weight += count * unitWeight;
             });
 
-            const envSelect = document.getElementById('envelope-type');
-            const sealInput = document.getElementById('seal-count');
-            
-            weight += (Number(envSelect.value) || 0);
-            weight += (Number(sealInput.value) || 0) * 10; // 彌封每個 10g
+            const envWeight = Number(document.getElementById('envelope-type').value) || 0;
+            const sealWeight = (Number(document.getElementById('seal-count').value) || 0) * 10;
+            weight += envWeight + sealWeight;
 
             let baseFee = 0;
             if (weight > 0) {
