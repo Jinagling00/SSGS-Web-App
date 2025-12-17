@@ -20,7 +20,7 @@
         .document-group-title { margin-top: 40px; margin-bottom: 10px; border-left: 5px solid var(--accent-color); padding-left: 10px; text-align: left; color: var(--primary-color); }
         
         .calc-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
-        .calc-input { width: 60px; padding: 5px; border: 1px solid #ccc; border-radius: 4px; text-align: center; }
+        .calc-input { width: 65px; padding: 5px; border: 1px solid #ccc; border-radius: 4px; text-align: center; }
         @media (max-width: 600px) { .fee-display-container { flex-direction: column; gap: 10px; } }
     </style>
 </head>
@@ -103,7 +103,6 @@
             in_school: { title: "中文在學證明書申請", content: `<ul class="step-list"><li>條件：須學雜費已繳交且已銷帳。</li><li>工本費：$10。</li></ul>` },
             chinese_degree_cert: { title: "補發中文學位證明書", content: `<ul class="step-list"><li>工本費：$100。</li><li>限制：無法郵遞領取。</li></ul>` },
             english_transcript: { title: "英文歷年成績單申請", content: `<ul class="step-list"><li>必備：護照影本。</li><li>工本費：$10。</li></ul>` }
-            // ... 其餘文件資料比照辦理
         };
 
         function showDocumentDetail(key) {
@@ -117,19 +116,34 @@
         function closeModal() { document.getElementById('documentModal').style.display = 'none'; }
         window.onclick = function(event) { if (event.target == document.getElementById('documentModal')) closeModal(); }
 
-        document.querySelectorAll('.calc-input, #envelope-type, #seal-count, #mail-method').forEach(el => {
-            el.addEventListener('input', calculatePreciseFees);
+        // --- 核心計算邏輯 ---
+        document.addEventListener('DOMContentLoaded', function() {
+            const inputs = document.querySelectorAll('.calc-input, #envelope-type, #seal-count, #mail-method');
+            inputs.forEach(el => {
+                el.addEventListener('input', calculatePreciseFees);
+            });
+            calculatePreciseFees(); // 初始執行
         });
 
         function calculatePreciseFees() {
-            let price = 0, weight = 0;
-            document.querySelectorAll('.calc-input').forEach(i => {
-                const count = parseInt(i.value) || 0;
-                price += count * parseInt(i.dataset.price);
-                weight += count * parseInt(i.dataset.weight);
+            let price = 0;
+            let weight = 0;
+            
+            const docInputs = document.querySelectorAll('.calc-input');
+            docInputs.forEach(i => {
+                const count = Number(i.value) || 0;
+                const unitPrice = Number(i.getAttribute('data-price')) || 0;
+                const unitWeight = Number(i.getAttribute('data-weight')) || 0;
+                
+                price += count * unitPrice;
+                weight += count * unitWeight;
             });
-            weight += parseInt(document.getElementById('envelope-type').value) || 0;
-            weight += (parseInt(document.getElementById('seal-count').value) || 0) * 10;
+
+            const envSelect = document.getElementById('envelope-type');
+            const sealInput = document.getElementById('seal-count');
+            
+            weight += (Number(envSelect.value) || 0);
+            weight += (Number(sealInput.value) || 0) * 10; // 彌封每個 10g
 
             let baseFee = 0;
             if (weight > 0) {
@@ -141,12 +155,13 @@
                 else if (weight <= 1000) baseFee = 132;
                 else baseFee = 180;
             }
-            const isExpress = document.getElementById('mail-method').value === 'express-reg';
-            const finalStamp = (baseFee > 0) ? baseFee + (isExpress ? 7 : 0) : 0;
 
-            document.getElementById('money-order-total').textContent = price;
-            document.getElementById('stamp-total').textContent = finalStamp;
-            document.getElementById('total-weight').textContent = weight;
+            const mailMethod = document.getElementById('mail-method').value;
+            const finalStamp = (baseFee > 0) ? baseFee + (mailMethod === 'express-reg' ? 7 : 0) : 0;
+
+            document.getElementById('money-order-total').textContent = isNaN(price) ? 0 : price;
+            document.getElementById('stamp-total').textContent = isNaN(finalStamp) ? 0 : finalStamp;
+            document.getElementById('total-weight').textContent = isNaN(weight) ? 0 : weight;
         }
     </script>
 </body>
