@@ -25,13 +25,13 @@ body {
 /* 容器樣式 */
 .container {
     background: var(--card-bg);
-    padding: 40px;
+    padding: 30px 20px; /* 手機端減少左右內距 */
     border-radius: 12px;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-    width: 90%;
-    max-width: 800px; /* 增加寬度以容納更多內容 */
-    text-align: center;
-    margin: 30px auto; /* 確保在小於 min-height 時也能垂直置中 */
+    width: 95%; /* 增加手機端寬度佔比 */
+    max-width: 800px;
+    margin: 20px auto;
+    box-sizing: border-box; /* 重要：確保 padding 不會撐破容器 */
 }
 
 /* 標題樣式 */
@@ -70,11 +70,11 @@ h1 {
 
 /* service_menu.html 下方的返回按鈕修正 */
 .back-to-home-btn {
-    /* 覆蓋 option-button 在 grid 容器內的 100% 寬度 */
-    max-width: 400px; 
-    margin: 30px auto 0 auto !important; /* 置中並增加上方間距 */
-    /* 確保按鈕是區塊元素才能置中 */
-    display: block;
+    width: 100%;       /* 在手機端預設佔滿 */
+    max-width: 300px;  /* 但限制最大寬度防止太長 */
+    margin: 30px auto !important; /* auto 確保水平置中 */
+    display: block;    /* 必須是區塊元素才能置中 */
+    text-align: center;
 }
 
 /* 確保 general button 樣式不影響 a 標籤導覽卡片 */
@@ -191,9 +191,25 @@ h1 {
 }
 
 /* 確保小螢幕上退回單欄 */
+/* --- 媒體查詢：針對手機螢幕優化 --- */
 @media (max-width: 600px) {
+    h1 {
+        font-size: 1.5em; /* 縮小標題字體 */
+    }
+
     .service-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: 1fr; /* 服務選單改為單欄佈局 */
+        gap: 15px;
+    }
+
+    .document-grid {
+        grid-template-columns: 1fr; /* 文件卡片改為單欄佈局 */
+    }
+
+    /* 手機端按鈕字體微調 */
+    .option-button, .decision-button {
+        padding: 12px 20px;
+        font-size: 1em;
     }
 }
 
