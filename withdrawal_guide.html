@@ -21,12 +21,12 @@
             
             <div class="result-box">
                 <h3>步驟一：申請文件準備</h3>
-                <p>請準備以下文件，並依據流程圖 準備會辦單位簽章：</p>
+                <p>請準備以下文件，並依序送請導師、系主任等會辦單位簽章：</p>
                 
                 <h4>必備文件清單 (依據您的學籍狀態)</h4>
                 <ul id="requiredDocsList">
                     <li>**休/退學申請書** (一式兩份，可至註冊組領取或表單下載處下載)</li>
-                    <li>**學生證** (如遺失須先線上掛失並於申請書上註明)</li>
+                    <li>**學生證** (如遺失須先線上掛失並於申請書上註明，由學生自行負責)</li>
                     </ul>
 
                 <h4 style="margin-top: 20px;">步驟二：費用與特殊身份處理</h4>
@@ -40,12 +40,8 @@
                     <li>
                         <strong style="color: blue;">兵役提醒 (男生未服役)：</strong> 需額外填寫**兵役切結書**，並會辦**生輔組兵役承辦人**。
                     </li>
-                    <li>
-                        <strong style="color: blue;">外籍生提醒：</strong> 需加會**國際事務處**。
-                    </li>
-                    <li>
-                        <strong style="color: blue;">住宿生提醒：</strong> 需加會**宿舍組**。
-                    </li>
+                    <li><strong style="color: blue;">住宿生：</strong> 需加會**宿舍組**。</li>
+                    <li><strong style="color: blue;">外籍生：</strong> 需加會**國際事務處**。</li>
                 </ul>
 
                 <h4 style="margin-top: 20px;">📌 復學文件 (適用休學期滿者)</h4>
@@ -58,25 +54,38 @@
 
     <script src="/SSGS-Web-App/app.js"></script> 
     <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const urlParams = new URLSearchParams(window.location.search);
-        const studentId = urlParams.get('id');
-        const studentLevel = urlParams.get('level');
-        const requiresConsent = urlParams.get('consent');
-        
-        const withdrawalLink = document.querySelector('a[href="/SSGS-Web-App/withdrawal_guide.html"]');
-        
-        // 如果參數存在，動態修改連結
-        if (studentId && studentLevel) {
-            withdrawalLink.href = `/SSGS-Web-App/withdrawal_guide.html?id=${studentId}&level=${studentLevel}&consent=${requiresConsent}`;
-        }
-        
-        // 可選：顯示已辨識身份
-        const userInfo = document.getElementById('userInfo');
-        if (userInfo && studentLevel) {
-             userInfo.innerHTML = `<p style="color: var(--primary-color); font-weight: 700;">您的身份：日間部 / ${studentLevel}</p>`;
-        }
-    });
-</script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const studentLevel = urlParams.get('level');
+            const requiresConsent = urlParams.get('consent') === 'true'; // 轉為布林值
+
+            document.getElementById('loadingInfo').style.display = 'none'; // 無論如何，隱藏載入中訊息
+            
+            const requiredDocsList = document.getElementById('requiredDocsList');
+            const studentLevelDisplay = document.getElementById('studentLevelDisplay');
+
+            if (studentLevel && studentLevelDisplay) {
+                studentLevelDisplay.textContent = studentLevel;
+                
+                // 動態插入家長同意書判斷
+                if (requiresConsent) {
+                    const consentItem = document.createElement('li');
+                    consentItem.innerHTML = `**家長或監護人同意書** <span style="color: red;">(因您是 **${studentLevel}**，此為必備文件)</span>`;
+                    requiredDocsList.appendChild(consentItem);
+                } else {
+                    const noteItem = document.createElement('li');
+                    noteItem.innerHTML = `<strong style="color: green;">無需</strong> 繳交家長或監護人同意書 (因您是 ${studentLevel} 層級)。`;
+                    requiredDocsList.appendChild(noteItem);
+                }
+                
+                document.getElementById('guideContent').style.display = 'block'; // 顯示內容
+            } else {
+                // 參數缺失時顯示的錯誤訊息
+                const guideContent = document.getElementById('guideContent');
+                guideContent.innerHTML = '<p style="color: red; font-weight: 700;">身份資訊遺失，請返回首頁重新輸入學號，以取得精準指引！</p>';
+                guideContent.style.display = 'block';
+            }
+        });
+    </script>
 </body>
 </html>
