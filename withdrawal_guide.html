@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>休、退學與復學指引 - SSGS</title>
+    <title>休、退學與復學指引</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&display=swap" rel="stylesheet">
@@ -16,6 +16,7 @@
         .step-list { text-align: left; list-style: disc; padding-left: 20px; }
         .location-hint { color: #2e7d32; font-weight: bold; }
         .download-link { color: var(--primary-color); font-weight: bold; text-decoration: underline; }
+        .error-hint { color: red; font-size: 0.85em; display: none; margin-top: -15px; margin-bottom: 15px; }
     </style>
 </head>
 <body>
@@ -23,11 +24,12 @@
         <div id="step-identify" class="step-section active">
             <h1>🆔 身份辨識</h1>
             <p>請輸入學號以取得精準的休/退/復學申請流程：</p>
-            <input type="text" id="studentIdInput" placeholder="請輸入學號 (如: 112210123)" class="calc-input" 
+            <input type="text" id="studentIdInput" placeholder="請輸入 10 碼學號" maxlength="10" class="calc-input" 
                    style="width: 80%; max-width: 300px; margin-bottom: 20px; padding: 10px; border: 2px solid var(--primary-color); border-radius: 8px;">
+            <div id="idError" class="error-hint">⚠️ 請輸入正確的 10 碼數字學號</div>
             <br>
             <button onclick="startGuide()" class="decision-button">取得精準流程</button>
-            <p style="font-size: 0.8em; color: #666; margin-top: 15px;">※ 本系統不會儲存您的學號，關閉網頁後資訊即清除。</p>
+            <p style="font-size: 0.8em; color: #666; margin-top: 15px;">※ 本系統僅於瀏覽器記憶體處理資訊，關閉後即徹底清除。</p>
         </div>
 
         <div id="step-content" class="step-section">
@@ -35,8 +37,7 @@
             <h1>⏳ 休/退學與復學指引</h1>
             <p>您的身份已辨識為：<strong id="studentLevelDisplay" style="color: var(--primary-color);"></strong>。</p>
             
-            <div id="dynamicGuideBody">
-                </div>
+            <div id="dynamicGuideBody"></div>
 
             <div style="margin-top: 30px; display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
                 <button onclick="resetSPA()" class="option-button" style="background-color: #f0f0f0; color: #333; width: auto; padding: 10px 20px;">重新查詢</button>
@@ -48,44 +49,43 @@
     <script>
         function startGuide() {
             const idInput = document.getElementById('studentIdInput');
+            const errorHint = document.getElementById('idError');
             const id = idInput.value.trim();
-            if (!id) { alert("請輸入學號！"); return; }
+            
+            // 加入 10 碼數字限制的正規表達式驗證
+            const idRegex = /^[0-9]{10}$/;
+            
+            if (!idRegex.test(id)) {
+                errorHint.style.display = 'block';
+                idInput.style.borderColor = 'red';
+                return;
+            } else {
+                errorHint.style.display = 'none';
+                idInput.style.borderColor = 'var(--primary-color)';
+            }
 
-            // 1. 執行辨識邏輯
             let studentLevel = "一般生";
             let requiresConsent = false;
             let isMinsheng = false;
 
-            if (id.length === 9) {
-                const secondChar = id.charAt(1);
-                if (['1', '2', '3', '4', 'A'].includes(secondChar)) {
-                    studentLevel = "五專部";
-                    requiresConsent = true;
-                } else if (['6', 'B'].includes(secondChar)) {
-                    studentLevel = "四技/大學部";
-                    requiresConsent = true;
-                } else if (secondChar === '5') {
-                    studentLevel = "二技部";
-                    requiresConsent = true;
-                } else if (['7', '8', '9'].includes(secondChar)) {
-                    studentLevel = "研究所";
-                    requiresConsent = false;
-                }
-            } else if (id.length === 8) {
-                studentLevel = "進修部/其他";
+            // 辨識邏輯：檢查第二碼是否為 1, 2, 4
+            const secondChar = id.charAt(1);
+            if (['1', '2', '4'].includes(secondChar)) {
+                requiresConsent = true;
+                studentLevel = (secondChar === '1') ? "五專部" : "四技/二技部";
+            } else {
                 requiresConsent = false;
+                studentLevel = "研究所/進修部/其他學制";
             }
 
-            // 判斷校區 (護理、美容、老服系：510, 520, 530)
+            // 判斷校區 (護理、美容、老服系)
             if (id.includes("510") || id.includes("520") || id.includes("530")) {
                 isMinsheng = true;
             }
 
-            // 2. 更新顯示資訊
             document.getElementById('currentIdDisplay').textContent = id;
             document.getElementById('studentLevelDisplay').textContent = studentLevel;
 
-            // 3. 構建 HTML 內容
             let contentHtml = '<div class="result-box" style="text-align:left;">';
             contentHtml += '<h3>第一階段：申請文件準備</h3>';
             contentHtml += `<p>辦理地點：<span class="location-hint">三民校區（中正大樓2樓）</span> 或 <span class="location-hint">民生校區（誠敬樓2樓）</span>。</p>`;
@@ -102,38 +102,33 @@
                 contentHtml += `
                     <li class="warning-note">
                         <strong>必備文件：</strong> <a href="/SSGS-Web-App/forms/國立臺中科技大學(休、退)學家長同意書.pdf" download style="color:red; font-weight:bold;">《家長同意書》</a><br>
-                        (因您屬於 ${studentLevel}，需檢附家長或監護人簽章)
+                        (因您的學制辨識為 ${studentLevel}，需檢附家長或監護人簽章)
                     </li>`;
             } else {
-                contentHtml += '<li><strong style="color: green;">無需</strong> 繳交家長同意書。</li>';
+                contentHtml += '<li><strong style="color: green;">無需</strong> 繳交家長同意書 (研究所/進修部)。</li>';
             }
 
-            contentHtml += '<li>學生證 (如遺失須先線上掛失，並於申請書註明)</li>';
+            contentHtml += '<li>學生證 (如遺失須先線上掛失並於申請書註明)</li>';
             contentHtml += '<li>學雜費退費：符合退費標準者，請附繳費收據正本及本人存摺封面影本。</li>';
             contentHtml += '</ul>';
 
             contentHtml += '<h4 style="margin-top: 20px;">第二階段：會辦與特殊處理</h4>';
             contentHtml += '<ul class="step-list">';
-            contentHtml += '<li><strong>流程順序：</strong> 導師 → 系承辦+系主任 → 相關會辦單位 → 註冊組。</li>';
+            contentHtml += '<li><strong>流程順序：</strong> 導師 → 系主任 → 相關會辦單位 → 註冊組。</li>';
             contentHtml += '<li><strong>學貸身份：</strong> 需會辦課外活動指導組。</li>';
-            contentHtml += '<li><strong>兵役提醒：</strong> 男生未服役需先至註冊組填寫兵役切結書，並會辦學務處兵役承辦。</li>';
-            contentHtml += '<li><strong>住宿生：</strong> 有住學生宿舍需至宿舍組會辦 (包含民生校區學生)。</li>';
+            contentHtml += '<li><strong>兵役提醒：</strong> 男生未服役需至註冊組填寫兵役切結書。</li>';
             contentHtml += '</ul>';
-
-            contentHtml += '<h4 style="margin-top: 20px;">📌 復學提示</h4>';
-            contentHtml += '<p>休學期滿者，請至註冊組詢問復學流程。</p>';
             contentHtml += '</div>';
 
-            // 執行插入
             document.getElementById('dynamicGuideBody').innerHTML = contentHtml;
-
-            // 4. 切換區塊
             document.getElementById('step-identify').classList.remove('active');
             document.getElementById('step-content').classList.add('active');
         }
 
         function resetSPA() {
             document.getElementById('studentIdInput').value = "";
+            document.getElementById('idError').style.display = 'none';
+            document.getElementById('studentIdInput').style.borderColor = 'var(--primary-color)';
             document.getElementById('step-content').classList.remove('active');
             document.getElementById('step-identify').classList.add('active');
         }
