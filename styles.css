@@ -1,6 +1,6 @@
 /* =========================================
    統一視覺樣式表 (styles.css)
-   整合獨立郵寄計算機樣式與 RWD 優化
+   整合 PWA 優化、聯絡資訊與搜尋功能樣式
    ========================================= */
 
 /* 1. UI 顏色與全域變數定義 */
@@ -12,6 +12,8 @@
     --card-bg: #fff;
     --error-color: #d8000c;
     --info-bg: #e0f2ff;
+    --success-bg: #e8f5e9;
+    --success-border: #2e7d32;
 }
 
 /* 2. 基礎字體與背景設定 */
@@ -40,7 +42,7 @@ body {
     text-align: center;
 }
 
-/* 4. 標題與排版樣式 */
+/* 4. 標題與搜尋框 */
 h1 {
     color: var(--primary-color);
     font-weight: 700;
@@ -49,6 +51,25 @@ h1 {
     border-bottom: 3px solid var(--accent-color);
     display: inline-block;
     padding-bottom: 5px;
+}
+
+.search-container {
+    margin: 20px 0;
+}
+
+#docSearch {
+    width: 100%;
+    padding: 12px 20px;
+    border: 2px solid var(--primary-color);
+    border-radius: 25px;
+    font-size: 1em;
+    outline: none;
+    box-sizing: border-box;
+    transition: box-shadow 0.3s;
+}
+
+#docSearch:focus {
+    box-shadow: 0 0 8px rgba(0, 71, 143, 0.3);
 }
 
 h2.document-group-title {
@@ -61,7 +82,7 @@ h2.document-group-title {
     font-size: 1.4em;
 }
 
-/* 5. 按鈕核心樣式 (decision & option) */
+/* 5. 按鈕樣式 */
 .decision-button, .option-button {
     background-color: var(--accent-color);
     color: var(--primary-color);
@@ -85,21 +106,7 @@ h2.document-group-title {
     box-shadow: 0 4px 15px rgba(255, 192, 0, 0.4);
 }
 
-.decision-button:active, .option-button:active {
-    transform: scale(0.98);
-}
-
-/* 6. 導航與返回按鈕修正 */
-.back-to-home-btn {
-    display: block !important;
-    width: 90% !important;
-    max-width: 320px !important;
-    margin: 30px auto !important;
-    padding: 12px 0;
-    float: none !important;
-}
-
-/* 7. 網格佈局 */
+/* 6. 網格佈局 */
 .service-grid, .document-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -122,10 +129,44 @@ h2.document-group-title {
 .service-card:hover, .document-card:hover {
     border-color: var(--primary-color);
     transform: translateY(-5px);
-    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
 }
 
-/* 8. 郵寄費用精算工具樣式 (獨立區塊) */
+/* 7. 彈窗內的元件 (檢查清單與位置) */
+.checklist-box {
+    background: #f0f4f8;
+    padding: 15px;
+    border-radius: 8px;
+    margin-top: 15px;
+    border: 1px solid #d1d9e0;
+}
+
+.checklist-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+    cursor: pointer;
+    text-align: left;
+}
+
+.checklist-item input {
+    margin-right: 10px;
+    width: 18px;
+    height: 18px;
+}
+
+.location-box {
+    background-color: var(--success-bg);
+    border: 1px solid var(--success-border);
+    padding: 12px;
+    border-radius: 8px;
+    margin-top: 15px;
+    text-align: left;
+}
+
+.machine-red { color: #d32f2f; font-weight: bold; }
+.machine-yellow { color: #fbc02d; font-weight: bold; text-shadow: 0.5px 0.5px 1px #ccc; }
+
+/* 8. 費用計算機 */
 .result-box {
     background: #ffffff;
     border: 2px solid var(--primary-color);
@@ -136,115 +177,71 @@ h2.document-group-title {
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
 }
 
-.calc-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 12px;
-    padding-bottom: 8px;
-    border-bottom: 1px solid #f0f0f0;
-}
-
-.calc-row:last-of-type {
-    border-bottom: none;
-}
-
-.calc-input {
-    width: 65px;
-    padding: 6px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    text-align: center;
-    font-size: 1em;
-}
-
-/* 費用顯示區塊 (匯票與郵資並排) */
 .fee-display-container {
     display: flex;
     gap: 15px;
     margin-top: 20px;
 }
 
-/* 匯票背景黃色，郵資背景藍色 */
-.fee-display-container > div:first-child {
+.fee-display-container > div {
     flex: 1;
-    background: #fffde7;
     padding: 15px;
     border-radius: 8px;
-    border: 1px solid var(--accent-color);
     text-align: center;
+    font-weight: bold;
 }
 
-.fee-display-container > div:last-child {
-    flex: 1;
-    background: var(--info-bg);
-    padding: 15px;
-    border-radius: 8px;
-    border: 1px solid var(--primary-color);
-    text-align: center;
+/* 9. 頁尾聯絡資訊 (Footer) */
+.contact-footer {
+    margin-top: 40px;
+    padding: 25px 15px;
+    background-color: #f9f9f9;
+    border-top: 1px solid #eee;
+    border-radius: 0 0 12px 12px;
 }
 
-/* 9. 其他 UI 元件 */
-.mail-rule-box {
-    background-color: #fffde7;
-    border: 2px solid var(--accent-color);
-    padding: 15px;
-    margin-top: 20px;
-    border-radius: 8px;
-    text-align: left;
+.footer-content h4 {
+    color: var(--primary-color);
+    margin-top: 0;
+    margin-bottom: 15px;
 }
 
-.flow-step {
-    background: #fff;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    padding: 20px;
-    margin-bottom: 25px;
-    text-align: left;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+.contact-grid {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    flex-wrap: wrap;
 }
 
-.warning-note {
-    background-color: #ffeaea;
-    border-left: 5px solid red;
-    padding: 10px 15px;
-    margin-top: 15px;
+.contact-item strong {
+    display: block;
+    color: var(--primary-color);
     font-size: 0.9em;
-    color: var(--error-color);
 }
 
-/* 10. 媒體查詢 (RWD)：針對手機螢幕優化 */
+.contact-item a {
+    text-decoration: none;
+    color: #444;
+    font-weight: bold;
+    font-size: 1.1em;
+}
+
+/* 10. 媒體查詢 (RWD) */
 @media (max-width: 600px) {
     .container {
-        padding: 20px 15px !important;
-        width: 95% !important;
-    }
-
-    h1 {
-        font-size: 1.4em; 
-        text-align: center;
+        padding: 20px 15px;
     }
 
     .service-grid, .document-grid {
-        display: flex !important;
-        flex-direction: column !important;
-        align-items: center !important; 
+        grid-template-columns: 1fr;
+    }
+
+    .contact-grid {
+        flex-direction: column;
         gap: 15px;
     }
-    
-    .service-card, .document-card {
-        width: 100% !important;
-        max-width: 320px;
-        box-sizing: border-box;
-    }
 
-    /* 手機版費用顯示改為上下排列 */
     .fee-display-container {
         flex-direction: column;
-    }
-
-    .option-button, .decision-button {
-        padding: 12px 10px;
-        font-size: 1em;
     }
 }
