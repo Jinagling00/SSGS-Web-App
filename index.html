@@ -3,67 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>註冊組自我服務指引系統</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/SSGS-Web-App/styles.css"> 
-    <style>
-        /* 僅針對 index 頁面進行微調，確保輸入框樣式符合要求 */
-        .input-group {
-            margin-bottom: 30px;
-            text-align: left;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 700;
-            color: var(--primary-color);
-        }
-        
-        /* 核心樣式：純輸入欄 */
-        #studentId {
-            width: calc(100% - 24px);
-            padding: 12px;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            font-size: 1.1em;
-            transition: border-color 0.3s;
-            /* 移除預設的數字輸入框樣式 */
-            -moz-appearance: textfield; 
-            appearance: textfield;
-        }
-
-        #studentId:focus {
-            border-color: var(--primary-color);
-            outline: none;
-        }
-    </style>
+    <title>中科大註冊組導航系統</title>
+    <link rel="stylesheet" href="/SSGS-Web-App/styles.css">
 </head>
 <body>
     <div class="container">
-        <h1 style="display: flex; align-items: center; justify-content: center; border-bottom: none; padding-bottom: 0;">
-            <span style="font-size: 2em; margin-right: 10px;">📄</span>
-            註冊組自我服務指引系統
-        </h1>
-        <p style="border-bottom: 3px solid var(--accent-color); padding-bottom: 5px; display: inline-block;">
-            請輸入您的學號進行身份初步辨識，以確保您使用正確的指引服務。
-        </p>
-        
-        <div class="input-group">
-            <label for="studentId">您的學號：</label>
-            <input type="text" id="studentId" placeholder="請輸入學號，例如: 1XXXXXXXXX (10碼)" required maxlength="10">
-        </div>
-        
-        <button class="decision-button" onclick="checkStudentId()">
-            開始流程辨識
-        </button>
-        
-        <div id="messageContainer">
-            </div>
-    </div>
+        <h1>🎓 註冊組服務導航系統</h1>
+        <p>歡迎使用中科大日間部註冊組導航系統，請依據您的需求選擇功能。</p>
 
-    <script src="/SSGS-Web-App/app.js"></script>
+        <a href="service_menu.html" class="decision-button" style="padding: 20px; font-size: 1.3em;">🚀 進入申請流程導航</a>
+
+        <div class="result-box" style="margin-top: 30px; text-align: left;">
+            <h3>📅 近期重要時程 (行事曆)</h3>
+            <ul>
+                <li><a href="https://aca.nutc.edu.tw/var/file/15/1015/img/295676649.pdf" target="_blank">114學年度行事曆</a></li>
+                <li>114學年度第1學期休學截止日：115年1月9日。</li>
+                <li>學雜費減免申請：請參閱學務處公告。</li>
+            </ul>
+        </div>
+
+        <div class="flow-step" style="margin-top: 20px;">
+            <h3>📖 系統操作指南</h3>
+            <ol>
+                <li><strong>申請文件：</strong> 直接點擊「流程 A」即可查看所有證明申請說明。</li>
+                <li>資費精算：文件申請頁面提供回郵掛號資費預估工具。</li>
+                <li><strong>休、退學：</strong> 進入「流程 B」後輸入學號，系統會自動判斷您是否需要家長同意書。</li>
+                <li><strong>IC卡遺失補發：</strong> 掛失、補發申請流程引導。</li>
+                <li><strong>更改姓名、地址申請：</strong> 文件填寫及應繳資料引導。</li>
+            </ol>
+        </div>
+    </div>
 </body>
 </html>
