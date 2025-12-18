@@ -16,8 +16,8 @@ const PRE_CACHE_ASSETS = [
   'icon-512.png',
   
   // 4. 高頻率使用表單 (最核心的兩份)
-  'forms/國立臺中科技大學日間部註冊組各項證明申請書.pdf',
-  'forms/國立臺中科技大學(休、退、復)學申請書.pdf'
+  /forms/國立臺中科技大學日間部註冊組各項證明申請書 (1).pdf',
+  /forms/國立臺中科技大學(休、退、復)學申請書.pdf'
 ];
 
 self.addEventListener('install', event => {
