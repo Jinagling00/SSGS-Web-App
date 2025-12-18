@@ -230,9 +230,14 @@
             document.getElementById('stamp-total').textContent = isNaN(finalStamp) ? 0 : finalStamp;
             document.getElementById('total-weight').textContent = isNaN(weight) ? 0 : weight;
         }
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('service-worker.js')
+                    .then(reg => console.log('SSGS App 啟動成功！'))
+                    .catch(err => console.log('啟動失敗：', err));
+            });
+        }
     </script>
-    if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('service-worker.js');
-}
+
 </body>
 </html>
