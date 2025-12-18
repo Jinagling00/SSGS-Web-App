@@ -231,5 +231,8 @@
             document.getElementById('total-weight').textContent = isNaN(weight) ? 0 : weight;
         }
     </script>
+    if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('service-worker.js');
+}
 </body>
 </html>
