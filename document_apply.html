@@ -38,7 +38,8 @@
         <div class="search-container">
             <input type="text" id="docSearch" placeholder="🔍 輸入關鍵字搜尋 (例如：成績、護照、英文)..." onkeyup="filterDocuments()">
         </div>
-
+        <p>申請文件請填寫各項證明申請書。</p>
+        <p>委託他人辦理者請填寫委託書，並貼上委託人身分證正反面影本，受託人攜帶自己身分證正本供核對身分。</p>
         <div style="margin-bottom: 20px; display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;">
             <a href="/SSGS-Web-App/forms/國立臺中科技大學日間部註冊組各項證明申請書.pdf" download class="option-button" style="background-color: #e0f2ff; color: #00478F; border: 1px solid #00478F; display: inline-block; width: auto; padding: 10px 20px;">📥 下載《各項證明申請書》</a>
             <a href="/SSGS-Web-App/forms/國立臺中科技大學委託書.pdf" download class="option-button" style="background-color: #e0f2ff; color: #00478F; border: 1px solid #00478F; display: inline-block; width: auto; padding: 10px 20px;">📥 下載《委託書》</a>
@@ -68,8 +69,9 @@
         <h2 class="document-group-title">⚖️ 郵寄費用精算工具</h2>
         <div class="result-box" style="border: 2px solid var(--primary-color); background-color: #fff; padding: 25px; margin-top: 10px;">
             <div id="calculator-form" style="text-align: left; font-size: 0.95em;">
-                <div class="calc-row"><label>中文證明文件 ($10, 5g):</label><input type="number" class="calc-input" data-price="10" data-weight="5" min="0" value="0"></div>
-                <div class="calc-row"><label>學位證明書 ($100, 15g):</label><input type="number" class="calc-input" data-price="100" data-weight="15" min="0" value="0"></div>
+                <div class="calc-row"><label>中文成績單、中/英文在學證明、休學證明、學位證明書影本 ($10, 5g):</label><input type="number" class="calc-input" data-price="10" data-weight="5" min="0" value="0"></div>
+                <div class="calc-row"><label>中/英文修業證明書 ($10, 15g):</label><input type="number" class="calc-input" data-price="10" data-weight="15" min="0" value="0"></div>
+                <div class="calc-row"><label>英文學位證明書 ($100, 15g):</label><input type="number" class="calc-input" data-price="100" data-weight="15" min="0" value="0"></div>
                 <div class="calc-row"><label>英文成績單 ($10, 25g):</label><input type="number" class="calc-input" data-price="10" data-weight="25" min="0" value="0"></div>
                 <div style="margin-top: 15px; border-top: 1px solid #eee; padding-top: 15px;">
                     <div class="calc-row"><label>回郵信封:</label><select id="envelope-type" style="padding: 5px;"><option value="20">大信封(20g)</option><option value="8">小信封(8g)</option></select></div>
@@ -122,14 +124,14 @@
             chinese_transcript: {
                 title: "中文歷年成績單申請",
                 isMachine: true,
-                items: ["申請書", "身分證正本(機台核驗使用)", "工本費 (10元/份)"],
+                items: ["工本費 (10元/份)", "推甄用、休退學成績單需繳費收據"],
                 restriction: "無特殊郵寄限制。在校生排名需於繳費機選擇「推甄用成績單」。",
                 content: `<ul class="step-list"><li>取件方式：利用校內自動繳費機繳費後立刻取件。</li><li>休退學生：請持繳費收據至註冊組領取。</li></ul>`
             },
             in_school: {
                 title: "中文在學證明書申請",
                 isMachine: true,
-                items: ["已完成繳費並銷帳之記錄", "身分證正本(機台核驗使用)"],
+                items: ["已完成繳費並銷帳之記錄", "工本費 (10元/份)"],
                 restriction: "無法郵寄取件，請至校內機台辦理。",
                 content: `<ul class="step-list"><li>條件：學雜費已銷帳方可申請。</li><li>取件方式：利用校內自動繳費機立即列印。</li></ul>`
             },
@@ -143,7 +145,7 @@
             chinese_degree_cert: {
                 title: "補發中文學位證明書",
                 isMachine: false,
-                items: ["申請書", "一吋照片2張", "工本費 (100元/份)", "身分證正反面影本"],
+                items: ["申請書",  "工本費 (100元/份)", "身分證"],
                 restriction: "限正本遺失者申請，且無法郵遞領取。",
                 content: `<ul class="step-list"><li>注意：申請後原正本失效。</li><li>時程：約 3 個工作天。</li></ul>`
             }
