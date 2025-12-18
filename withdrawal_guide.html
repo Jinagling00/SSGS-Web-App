@@ -17,6 +17,8 @@
         .location-hint { color: #2e7d32; font-weight: bold; }
         .download-link { color: var(--primary-color); font-weight: bold; text-decoration: underline; }
         .error-hint { color: red; font-size: 0.85em; display: none; margin-top: -15px; margin-bottom: 15px; }
+        /* 新增：非日間部提示樣式 */
+        .other-unit-box { background-color: #fff9c4; border: 1px solid #fbc02d; padding: 20px; border-radius: 10px; text-align: left; margin: 20px 0; }
     </style>
 </head>
 <body>
@@ -35,7 +37,6 @@
         <div id="step-content" class="step-section">
             <div class="id-display-badge">當前學號：<span id="currentIdDisplay"></span></div>
             <h1>⏳ 休/退學與復學指引</h1>
-            <p>您的身份已辨識為：<strong id="studentLevelDisplay" style="color: var(--primary-color);"></strong>。</p>
             
             <div id="dynamicGuideBody"></div>
 
@@ -51,76 +52,94 @@
             const idInput = document.getElementById('studentIdInput');
             const errorHint = document.getElementById('idError');
             const id = idInput.value.trim();
-            
-            // 加入 10 碼數字限制的正規表達式驗證
             const idRegex = /^[0-9]{10}$/;
             
+            // 1. 基本驗證：必須 10 碼數字
             if (!idRegex.test(id)) {
+                errorHint.textContent = "⚠️ 請輸入正確的 10 碼數字學號";
                 errorHint.style.display = 'block';
                 idInput.style.borderColor = 'red';
                 return;
-            } else {
+            }
+
+            const firstDigit = id.charAt(0);
+            const secondChar = id.charAt(1);
+            const guideBody = document.getElementById('dynamicGuideBody');
+            document.getElementById('currentIdDisplay').textContent = id;
+
+            // 2. 篩選日間部學生 (學號 1 開頭)
+            if (firstDigit === '1') {
                 errorHint.style.display = 'none';
                 idInput.style.borderColor = 'var(--primary-color)';
+                
+                let studentLevel = "日間部學生";
+                let requiresConsent = ['1', '2', '4'].includes(secondChar); // 第二碼 1,2,4 需同意書
+
+                if (secondChar === '1') studentLevel = "日間部五專部";
+                else if (['2', '4'].includes(secondChar)) studentLevel = "日間部四技/二技部";
+                else studentLevel = "日間部研究所/其他";
+
+                let contentHtml = `<p>您的身份已辨識為：<strong style="color: var(--primary-color);">${studentLevel}</strong>。</p>`;
+                contentHtml += '<div class="result-box" style="text-align:left;">';
+                contentHtml += '<h3>第一階段：申請文件準備</h3>';
+                contentHtml += `<p>辦理地點：<span class="location-hint">三民校區（中正大樓2樓）</span> 或 <span class="location-hint">民生校區（誠敬樓2樓）</span>。</p>`;
+                
+                // 民生校區判斷
+                if (id.includes("510") || id.includes("520") || id.includes("530")) {
+                    contentHtml += '<p style="color:red; font-weight:bold;">⚠️ 提醒：您的科系請至民生校區辦理。</p>';
+                }
+
+                contentHtml += '<h4>休、退學必備文件清單</h4>';
+                contentHtml += '<ul class="step-list">';
+                contentHtml += `<li><a href="/SSGS-Web-App/forms/國立臺中科技大學(休、退、復)學申請書.pdf" download class="download-link">《(休、退、復)學申請書》</a> (B4尺寸)</li>`;
+                
+                if (requiresConsent) {
+                    contentHtml += `
+                        <li class="warning-note">
+                            <strong>必備文件：</strong> <a href="/SSGS-Web-App/forms/國立臺中科技大學(休、退)學家長同意書.pdf" download style="color:red; font-weight:bold;">《家長同意書》</a><br>
+                            (因您的學制辨識為 ${studentLevel}，需檢附家長或監護人簽章)
+                        </li>`;
+                } else {
+                    contentHtml += '<li><strong style="color: green;">無需</strong> 繳交家長同意書。</li>';
+                }
+
+                contentHtml += '<li>學生證 (如遺失須先線上掛失並於申請書註明)</li>';
+                contentHtml += '<li>學雜費退費：符合退費標準者，請附繳費收據正本及本人存摺封面影本。</li>';
+                contentHtml += '</ul>';
+                contentHtml += '<h4 style="margin-top: 20px;">第二階段：會辦與特殊處理</h4>';
+                contentHtml += '<ul class="step-list"><li>流程順序：導師 → 系主任 → 相關會辦單位 → 註冊組。</li><li>學貸身份：需會辦課外活動指導組。</li><li>兵役提醒：男生未服役需至註冊組填寫兵役切結書。</li></ul></div>';
+
+                guideBody.innerHTML = contentHtml;
+
+            } 
+            // 3. 非日間部學生 (學號 2, 3, 4 開頭)
+            else if (['2', '3', '4'].includes(firstDigit)) {
+                let contactUnit = "";
+                let contactTel = "";
+                switch (firstDigit) {
+                    case '2': contactUnit = "進修部夜間班"; contactTel = "04-22195720"; break;
+                    case '3': contactUnit = "進修部平假日班"; contactTel = "04-22195920"; break;
+                    case '4': contactUnit = "空中學院註冊組"; contactTel = "04-22195820"; break;
+                }
+                
+                guideBody.innerHTML = `
+                    <div class="other-unit-box">
+                        <h3 style="color: #d32f2f; margin-top:0;">⚠️ 跨單位提醒</h3>
+                        <p>本系統為<strong>日間部註冊組</strong>專用（學號 1 開頭）。</p>
+                        <p>您的學號首碼為 <strong>${firstDigit}</strong>，隸屬於：<br><strong>${contactUnit}</strong></p>
+                        <p>請撥打該單位專線洽詢：<br><a href="tel:${contactTel.replace(/-/g,'')}" style="font-size: 1.2em; font-weight: bold; color: var(--primary-color);">${contactTel}</a></p>
+                    </div>`;
+            } 
+            // 4. 學號輸入有誤 (非 1, 2, 3, 4 開頭)
+            else {
+                guideBody.innerHTML = `
+                    <div class="warning-note" style="font-size: 1.1em;">
+                        <p>❌ 學號輸入有誤</p>
+                        <p>請重新輸入，或來電由日間部專人協助：<br><a href="tel:04-22195130" style="font-weight:bold;">04-22195130</a></p>
+                    </div>`;
             }
 
-            let studentLevel = "一般生";
-            let requiresConsent = false;
-            let isMinsheng = false;
-
-            // 辨識邏輯：檢查第二碼是否為 1, 2, 4
-            const secondChar = id.charAt(1);
-            if (['1', '2', '4'].includes(secondChar)) {
-                requiresConsent = true;
-                studentLevel = (secondChar === '1') ? "五專部" : "四技/二技部";
-            } else {
-                requiresConsent = false;
-                studentLevel = "研究所/進修部/其他學制";
-            }
-
-            // 判斷校區 (護理、美容、老服系)
-            if (id.includes("510") || id.includes("520") || id.includes("530")) {
-                isMinsheng = true;
-            }
-
-            document.getElementById('currentIdDisplay').textContent = id;
-            document.getElementById('studentLevelDisplay').textContent = studentLevel;
-
-            let contentHtml = '<div class="result-box" style="text-align:left;">';
-            contentHtml += '<h3>第一階段：申請文件準備</h3>';
-            contentHtml += `<p>辦理地點：<span class="location-hint">三民校區（中正大樓2樓）</span> 或 <span class="location-hint">民生校區（誠敬樓2樓）</span>。</p>`;
-            
-            if (isMinsheng) {
-                contentHtml += '<p style="color:red; font-weight:bold;">⚠️ 提醒：您的科系請至民生校區辦理。</p>';
-            }
-
-            contentHtml += '<h4>休、退學必備文件清單</h4>';
-            contentHtml += '<ul class="step-list">';
-            contentHtml += `<li><a href="/SSGS-Web-App/forms/國立臺中科技大學(休、退、復)學申請書.pdf" download class="download-link">《(休、退、復)學申請書》</a> (B4尺寸)</li>`;
-            
-            if (requiresConsent) {
-                contentHtml += `
-                    <li class="warning-note">
-                        <strong>必備文件：</strong> <a href="/SSGS-Web-App/forms/國立臺中科技大學(休、退)學家長同意書.pdf" download style="color:red; font-weight:bold;">《家長同意書》</a><br>
-                        (因您的學制辨識為 ${studentLevel}，需檢附家長或監護人簽章)
-                    </li>`;
-            } else {
-                contentHtml += '<li><strong style="color: green;">無需</strong> 繳交家長同意書 (研究所/進修部)。</li>';
-            }
-
-            contentHtml += '<li>學生證 (如遺失須先線上掛失並於申請書註明)</li>';
-            contentHtml += '<li>學雜費退費：符合退費標準者，請附繳費收據正本及本人存摺封面影本。</li>';
-            contentHtml += '</ul>';
-
-            contentHtml += '<h4 style="margin-top: 20px;">第二階段：會辦與特殊處理</h4>';
-            contentHtml += '<ul class="step-list">';
-            contentHtml += '<li><strong>流程順序：</strong> 導師 → 系主任 → 相關會辦單位 → 註冊組。</li>';
-            contentHtml += '<li><strong>學貸身份：</strong> 需會辦課外活動指導組。</li>';
-            contentHtml += '<li><strong>兵役提醒：</strong> 男生未服役需至註冊組填寫兵役切結書。</li>';
-            contentHtml += '</ul>';
-            contentHtml += '</div>';
-
-            document.getElementById('dynamicGuideBody').innerHTML = contentHtml;
+            // 切換區塊
             document.getElementById('step-identify').classList.remove('active');
             document.getElementById('step-content').classList.add('active');
         }
@@ -132,9 +151,10 @@
             document.getElementById('step-content').classList.remove('active');
             document.getElementById('step-identify').classList.add('active');
         }
+
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('service-worker.js');
+        }
     </script>
-    if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('service-worker.js');
-}
 </body>
 </html>
