@@ -133,5 +133,8 @@
             document.getElementById('step-identify').classList.add('active');
         }
     </script>
+    if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('service-worker.js');
+}
 </body>
 </html>
