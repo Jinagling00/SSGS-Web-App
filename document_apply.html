@@ -81,7 +81,7 @@
                 <div class="fee-display-container" style="display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap;">
                     <div style="flex: 1; min-width: 120px; background: #fffde7; padding: 15px; border-radius: 8px; text-align: center;">💰 匯票金額：<span id="money-order-total">0</span> 元</div>
                     <div style="flex: 1; min-width: 120px; background: #e0f2ff; padding: 15px; border-radius: 8px; text-align: center;">✉️ 郵資：<span id="stamp-total">0</span> 元</div>
-                    <div style="flex: 1; min-width: 120px; background: #f1f8e9; padding: 15px; border-radius: 8px; text-align: center;">⚖️ 總重量：<span id="weight">0</span> g</div>
+                    <div style="flex: 1; min-width: 120px; background: #f1f8e9; padding: 15px; border-radius: 8px; text-align: center;">⚖️ 總重量：<span id="total-weight-display">0</span> g</div>
                 </div>
                 
                 <button onclick="calculatePreciseFees(); trackClick('btn_calc', '執行精算工具')" class="decision-button" style="margin-top:20px; width:100%;">重新計算資費</button>
@@ -170,44 +170,52 @@
         });
 
         function calculatePreciseFees() {
-            let price = 0, weight = 0;
-            // 1. 計算主體文件金額與重量
-            document.querySelectorAll('.calc-input').forEach(i => {
-                const count = Number(i.value) || 0;
-                price += count * Number(i.dataset.price);
-                weight += count * Number(i.dataset.weight);
-            });
-            // 2. 加入彌封與信封重量
-            weight += Number(document.getElementById('envelope-type').value);
-            weight += (Number(document.getElementById('seal-count').value) || 0) * 10;
+            try {
+                let price = 0, weight = 0;
+        
+                // 1. 統計文件金額與重量
+                document.querySelectorAll('.calc-input').forEach(i => {
+                    const count = Number(i.value) || 0;
+                    price += count * Number(i.dataset.price);
+                    weight += count * Number(i.dataset.weight);
+                });
+                
+                // 2. 加入信封與彌封重量
+                const envVal = Number(document.getElementById('envelope-type').value) || 0;
+                const sealVal = (Number(document.getElementById('seal-count').value) || 0) * 10;
+                weight += (envVal + sealVal);
+                
+                // 3. 郵資計算
+                let baseFee = 0;
+                if (weight > 0) {
+                    if (weight <= 20) baseFee = 28;
+                    else if (weight <= 50) baseFee = 36;
+                    else if (weight <= 100) baseFee = 44;
+                    else if (weight <= 250) baseFee = 60;
+                    else if (weight <= 500) baseFee = 92;
+                    else if (weight <= 1000) baseFee = 132;
+                    else baseFee = 180;
+                }
+        
+                const isExpress = document.getElementById('mail-method').value === 'express-reg';
+                const finalStamp = (baseFee > 0) ? baseFee + (isExpress ? 7 : 0) : 0;
 
-            // 3. 郵資級距邏輯 (2025 中華郵政掛號資費)
-            let baseFee = 0;
-            if (weight > 0) {
-                if (weight <= 20) baseFee = 28;
-                else if (weight <= 50) baseFee = 36;
-                else if (weight <= 100) baseFee = 44;
-                else if (weight <= 250) baseFee = 60;
-                else if (weight <= 500) baseFee = 92;
-                else if (weight <= 1000) baseFee = 132;
-                else baseFee = 180;
-            }
-            const isExpress = document.getElementById('mail-method').value === 'express-reg';
-            const finalStamp = (baseFee > 0) ? baseFee + (isExpress ? 7 : 0) : 0;
-
-            // 4. 更新畫面 (修正變數讀取錯誤)
-            document.getElementById('money-order-total').textContent = isNaN(price) ? 0 : price;
-            document.getElementById('stamp-total').textContent = isNaN(finalStamp) ? 0 : finalStamp;
-            
-            const weightDisplay = document.getElementById('weight');
-            if (weightDisplay) {
-                weightDisplay.textContent = isNaN(weight) ? 0 : weight;
-            }
-
-            // 5. 🚀 雲端同步：點擊計算時自動傳送數據
-            if (typeof trackClick === 'function') {
-                const mailNote = isExpress ? "限時掛號" : "普通掛號";
-                trackClick('btn_calc', `${mailNote} / 總額:${price} / 郵資:${finalStamp} / 重量:${weight}g`);
+                // 4. 更新畫面 (確保 ID 正確)
+                document.getElementById('money-order-total').textContent = price;
+                document.getElementById('stamp-total').textContent = finalStamp;
+        
+                const weightDisplay = document.getElementById('total-weight-display');
+                if (weightDisplay) {
+                    weightDisplay.textContent = weight;
+                }
+                
+                // 5. 🚀 雲端同步 (放在 Try 區塊內，若網路失敗不影響畫面)
+                if (typeof trackClick === 'function') {
+                    const mailType = isExpress ? "限時掛號" : "普通掛號";
+                    trackClick('btn_calc', `${mailType} / ${price}元 / ${finalStamp}郵資 / ${weight}g`);
+                }
+            } catch (error) {
+                console.error("計算過程出錯:", error);
             }
         }
 
