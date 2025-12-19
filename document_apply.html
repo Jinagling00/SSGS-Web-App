@@ -84,6 +84,12 @@
                     <div style="flex: 1; min-width: 120px; background: #f1f8e9; padding: 15px; border-radius: 8px; text-align: center;">⚖️ 總重量：<span id="weight">0</span> g</div>
                 </div>
                 
+                <div style="margin-top: 20px;">
+                    <button onclick="handleCalcAndSync()" class="decision-button" style="width: 100%; background-color: #00478F;">
+                        ✅ 確認計算結果
+                    </button>
+                </div>
+                
                 <button onclick="calculatePreciseFees(); trackClick('btn_calc', '執行精算工具')" class="decision-button" style="margin-top:20px; width:100%;">重新計算資費</button>
             </div>
         </div>
@@ -212,14 +218,28 @@
 
             updateText('money-order-total', price);
             updateText('stamp-total', finalStamp);
-            updateText('weight', weight); // 💡 如果您的 HTML 是 id="weight"，這裡就會成功
+            updateText('weight', weight); // 
 
-            // 5. 數據追蹤
-            if (typeof trackClick === 'function') {
-                trackClick('btn_calc', `計算：${price}元 / ${finalStamp}郵資`);
-            }
         }
 
+        function handleCalcAndSync() {
+            // 執行計算更新畫面
+            calculatePreciseFees();
+
+            // 取得更新後的數值供傳送使用
+            const price = document.getElementById('money-order-total').textContent;
+            const stamp = document.getElementById('stamp-total').textContent;
+            const weightValue = document.getElementById('weight').textContent;
+            const isExpress = document.getElementById('mail-method').value === 'express-reg';
+            const mailNote = isExpress ? "限時掛號" : "普通掛號";
+
+            // 5. 執行數據追蹤同步到雲端
+            if (typeof trackClick === 'function') {
+                const resultLog = `${mailNote} / 總額:${price}元 / 郵資:${stamp}元 / 重量:${weightValue}g`;
+                trackClick('btn_calc', resultLog);
+                alert("計算結果已更新並記錄成功！");
+            }
+        }
         // Service Worker 註冊
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
