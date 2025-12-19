@@ -170,52 +170,53 @@
         });
 
         function calculatePreciseFees() {
-            try {
-                let price = 0, weight = 0;
-        
-                // 1. 統計文件金額與重量
-                document.querySelectorAll('.calc-input').forEach(i => {
-                    const count = Number(i.value) || 0;
-                    price += count * Number(i.dataset.price);
-                    weight += count * Number(i.dataset.weight);
-                });
-                
-                // 2. 加入信封與彌封重量
-                const envVal = Number(document.getElementById('envelope-type').value) || 0;
-                const sealVal = (Number(document.getElementById('seal-count').value) || 0) * 10;
-                weight += (envVal + sealVal);
-                
-                // 3. 郵資計算
-                let baseFee = 0;
-                if (weight > 0) {
-                    if (weight <= 20) baseFee = 28;
-                    else if (weight <= 50) baseFee = 36;
-                    else if (weight <= 100) baseFee = 44;
-                    else if (weight <= 250) baseFee = 60;
-                    else if (weight <= 500) baseFee = 92;
-                    else if (weight <= 1000) baseFee = 132;
-                    else baseFee = 180;
-                }
-        
-                const isExpress = document.getElementById('mail-method').value === 'express-reg';
-                const finalStamp = (baseFee > 0) ? baseFee + (isExpress ? 7 : 0) : 0;
+            let price = 0, weight = 0;
+    
+            // 1. 計算金額與重量
+            document.querySelectorAll('.calc-input').forEach(i => {
+                const count = Number(i.value) || 0;
+                price += count * Number(i.dataset.price);
+                weight += count * Number(i.dataset.weight);
+            });
 
-                // 4. 更新畫面 (確保 ID 正確)
-                document.getElementById('money-order-total').textContent = price;
-                document.getElementById('stamp-total').textContent = finalStamp;
-        
-                const weightDisplay = document.getElementById('total-weight-display');
-                if (weightDisplay) {
-                    weightDisplay.textContent = weight;
+            // 2. 加入信封與彌封重量
+            const envElem = document.getElementById('envelope-type');
+            const sealElem = document.getElementById('seal-count');
+            weight += envElem ? Number(envElem.value) : 0;
+            weight += sealElem ? (Number(sealElem.value) || 0) * 10 : 0;
+
+            // 3. 郵資計算邏輯
+            let baseFee = 0;
+            if (weight > 0) {
+                if (weight <= 20) baseFee = 28;
+                else if (weight <= 50) baseFee = 36;
+                else if (weight <= 100) baseFee = 44;
+                else if (weight <= 250) baseFee = 60;
+                else if (weight <= 500) baseFee = 92;
+                else if (weight <= 1000) baseFee = 132;
+                else baseFee = 180;
+            }
+            const mailMethodElem = document.getElementById('mail-method');
+            const isExpress = mailMethodElem ? mailMethodElem.value === 'express-reg' : false;
+            const finalStamp = (baseFee > 0) ? baseFee + (isExpress ? 7 : 0) : 0;
+            
+            // 4. 【關鍵修正】安全地更新畫面，防止 null 報錯
+            const updateText = (id, value) => {
+                const elem = document.getElementById(id);
+                if (elem) {
+                    elem.textContent = isNaN(value) ? 0 : value;
+                } else {
+                    console.warn(`找不到 ID 為 "${id}" 的元素，請檢查 HTML！`);
                 }
-                
-                // 5. 🚀 雲端同步 (放在 Try 區塊內，若網路失敗不影響畫面)
-                if (typeof trackClick === 'function') {
-                    const mailType = isExpress ? "限時掛號" : "普通掛號";
-                    trackClick('btn_calc', `${mailType} / ${price}元 / ${finalStamp}郵資 / ${weight}g`);
-                }
-            } catch (error) {
-                console.error("計算過程出錯:", error);
+            };
+
+            updateText('money-order-total', price);
+            updateText('stamp-total', finalStamp);
+            updateText('weight', weight); // 💡 如果您的 HTML 是 id="weight"，這裡就會成功
+
+            // 5. 數據追蹤
+            if (typeof trackClick === 'function') {
+                trackClick('btn_calc', `計算：${price}元 / ${finalStamp}郵資`);
             }
         }
 
