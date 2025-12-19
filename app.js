@@ -177,17 +177,6 @@ function getWithdrawalApprovals(studentLevel, requiresParentConsent, gender, isS
 
     return requiredApprovals;
 }
-// 初始化計數器
-if (!localStorage.getItem('usage_stats')) {
-    localStorage.setItem('usage_stats', JSON.stringify({
-        'btn_apply': 0, 
-        'btn_calc': 0,   
-        'btn_withdrawal': 0, 
-        'btn_iccard': 0, 
-        'btn_namechange': 0, 
-        'btn_download': 0 
-    }));
-}
 
 // 指向您的 Google Apps Script 網址
 const GAS_URL = "https://script.google.com/macros/s/AKfycbxixWAAFhRpFxTK0siyG6nK48JCL7O2UN5XJuuNbnstJ8lMGvusVij9pbUo73qwrSdT3w/exec"; 
