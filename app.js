@@ -180,26 +180,51 @@ function getWithdrawalApprovals(studentLevel, requiresParentConsent, gender, isS
 // 初始化計數器
 if (!localStorage.getItem('usage_stats')) {
     localStorage.setItem('usage_stats', JSON.stringify({
-        'btn_apply': 0, // 申請證明
-        'btn_calc': 0,   // 資費精算
-        'btn_withdrawal': 0, // 休退學
-        'btn_iccard': 0, // 學生證
-        'btn_namechange': 0, // 更名
-        'btn_download': 0 // 文件下載   
+        'btn_apply': 0, 
+        'btn_calc': 0,   
+        'btn_withdrawal': 0, 
+        'btn_iccard': 0, 
+        'btn_namechange': 0, 
+        'btn_download': 0 
     }));
 }
 
-// 紀錄點擊的函式
-function trackClick(featureId) {
+// 指向您的 Google Apps Script 網址
+const GAS_URL = "https://script.google.com/macros/s/AKfycbxixWAAFhRpFxTK0siyG6nK48JCL7O2UN5XJuuNbnstJ8lMGvusVij9pbUo73qwrSdT3w/exec"; 
+
+function trackClick(featureId, note = "") {
+    // 1. 本地紀錄 (localStorage)
     let stats = JSON.parse(localStorage.getItem('usage_stats'));
     if (stats.hasOwnProperty(featureId)) {
         stats[featureId] += 1;
         localStorage.setItem('usage_stats', JSON.stringify(stats));
-        console.log(`[數據紀錄] ${featureId} 使用次數：${stats[featureId]}`);
+        console.log(`[本地紀錄] ${featureId}：${stats[featureId]}`);
     }
+
+    // 2. 雲端傳送 (fetch 到 Google Sheets)
+    const payload = {
+        featureId: featureId,
+        note: note || "無備註"
+    };
+
+    // 使用 no-cors 模式確保即使跨網域也能傳送成功
+    fetch(GAS_URL, {
+        method: 'POST',
+        mode: 'no-cors', 
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+    })
+    .then(() => {
+        console.log(`[雲端同步] 已成功傳送：${featureId}`);
+    })
+    .catch(err => {
+        console.warn(`[雲端同步失敗]`, err);
+    });
 }
 
-// 顯示統計結果 (可供您在測試時查看)
+// 顯示統計結果
 function showStats() {
     console.table(JSON.parse(localStorage.getItem('usage_stats')));
 }
