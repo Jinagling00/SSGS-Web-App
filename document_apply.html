@@ -82,6 +82,7 @@
                 <div class="fee-display-container" style="display: flex; gap: 15px; margin-top: 20px;">
                     <div style="flex: 1; background: #fffde7; padding: 15px; border-radius: 8px; text-align: center;">💰 匯票金額：<span id="money-order-total">0</span> 元</div>
                     <div style="flex: 1; background: #e0f2ff; padding: 15px; border-radius: 8px; text-align: center;">✉️ 郵資：<span id="stamp-total">0</span> 元</div>
+                    <div style="flex: 1; min-width: 120px; background: #f1f8e9; padding: 15px; border-radius: 8px; text-align: center;">⚖️ 總重量：<span id="total-weight">0</span> g</div>
                 </div>
             </div>
         </div>
@@ -286,7 +287,16 @@
 
             document.getElementById('money-order-total').textContent = isNaN(price) ? 0 : price;
             document.getElementById('stamp-total').textContent = isNaN(finalStamp) ? 0 : finalStamp;
-            document.getElementById('total-weight').textContent = isNaN(weight) ? 0 : weight;
+            const weightDisplay = document.getElementById('total-weight');
+            if (weightDisplay) {
+                weightDisplay.textContent = isNaN(weight) ? 0 : weight;
+            }
+
+            // 備註內包含：郵寄方式、總金額與郵資
+            const mailNote = isExpress ? "限時掛號" : "普通掛號";
+            if (typeof trackClick === 'function') {
+                trackClick('btn_calc', `${mailNote} / 總額:${price} / 郵資:${finalStamp}`);
+            }
         }
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
