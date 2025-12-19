@@ -61,6 +61,7 @@
                 <div class="document-card" data-title="英文歷年成績單" onclick="showDocumentDetail('english_transcript')"><h3>英文歷年成績單</h3></div>
                 <div class="document-card" data-title="英文在學證明書" onclick="showDocumentDetail('english_in_school')"><h3>英文在學證明書</h3></div>
                 <div class="document-card" data-title="英文休學證明書" onclick="showDocumentDetail('english_suspension_cert')"><h3>英文休學證明書</h3></div>
+                <div class="document-card" data-title="英文修業證明書" onclick="showDocumentDetail('english_completion_cert')"><h3>英文修業證明書</h3></div>
                 <div class="document-card" data-title="英文學位證明書" onclick="showDocumentDetail('english_degree_cert')"><h3>英文學位證明書</h3></div>
                 <div class="document-card" data-title="英文畢業證明書" onclick="showDocumentDetail('english_grad_cert')"><h3>英文畢業證明書(92年前)</h3></div>
             </div>
@@ -126,14 +127,42 @@
                 isMachine: true,
                 items: ["工本費 (10元/份)", "推甄用、休退學成績單需繳費收據"],
                 restriction: "無特殊郵寄限制。在校生排名需於繳費機選擇「推甄用成績單」。",
-                content: `<ul class="step-list"><li>取件方式：利用校內自動繳費機繳費後立刻取件。</li><li>休退學生：請持繳費收據至註冊組領取。</li></ul>`
+                content: `<ul class="step-list"><li>取件方式：利用校內自動繳費機繳費後立刻取件。</li><li>休退學生、推甄用：請持繳費收據至註冊組領取。</li></ul>`
             },
             in_school: {
                 title: "中文在學證明書申請",
                 isMachine: true,
                 items: ["已完成繳費並銷帳之記錄", "工本費 (10元/份)"],
                 restriction: "無法郵寄取件，請至校內機台辦理。",
-                content: `<ul class="step-list"><li>條件：學雜費已銷帳方可申請。</li><li>取件方式：利用校內自動繳費機立即列印。</li></ul>`
+                content: `<ul class="step-list"><li>條件：學雜費已銷帳方可申請；未銷帳需至註冊組人工列印。</li><li>取件方式：利用校內自動繳費機立即列印。</li></ul>`
+            },
+            degree_copy: {
+                title: "學位畢業證書影本申請",
+                isMachine: false,
+                items: ["申請書", "學位/畢業證書正本", "工本費 (10元/份)"],
+                restriction: "無特殊郵寄限制。正本當場影印後自行帶回。",
+                content: `<ul class="step-list"><li>條件：約半個工作天，早上11點前申請可當天15:30後取件。</li><li>取件方式：請持繳費收據至註冊組領取，或附回郵信封寄回。</li></ul>`
+            },
+            chinese_suspension_cert: {
+                title: "中文休學證明書",
+                isMachine: false,
+                items: ["限休學生申請", "申請書", "工本費 (10元/份)"],
+                restriction: "無特殊郵寄限制。",
+                content: `<ul class="step-list"><li>條件：約半個工作天，早上11點前申請可當天15:30後取件。</li><li>取件方式：請持繳費收據至註冊組領取，或附回郵信封寄回。</li></ul>`
+            },
+            chinese_suspension_cert: {
+                title: "中文修學證明書(含歷年成績單)",
+                isMachine: false,
+                items: ["限退學生申請", "申請書", "工本費 (10元/份)"],
+                restriction: "無特殊郵寄限制。",
+                content: `<ul class="step-list"><li>條件：約半個工作天，早上11點前申請可當天15:30後取件。</li><li>取件方式：請持繳費收據至註冊組領取，或附回郵信封寄回。</li></ul>`
+            },
+            chinese_degree_cert: {
+                title: "補發中文學位證明書",
+                isMachine: false,
+                items: ["申請書",  "工本費 (100元/份)", "身分證"],
+                restriction: "限正本遺失者申請，且無法郵遞領取。",
+                content: `<ul class="step-list"><li>注意：申請後原正本失效。</li><li>時程：約 3 個工作天。</li></ul>`
             },
             english_transcript: {
                 title: "英文歷年成績單申請",
@@ -142,13 +171,42 @@
                 restriction: "須附護照影本。作業時間約3~7個工作天。",
                 content: `<ul class="step-list"><li>時程：英文相關文件需約 3 個工作天。</li><li>彌封：若需彌封請於申請書備註。</li></ul>`
             },
-            chinese_degree_cert: {
-                title: "補發中文學位證明書",
+            english_in_school: {
+                title: "英文在學證明書",
                 isMachine: false,
-                items: ["申請書",  "工本費 (100元/份)", "身分證"],
-                restriction: "限正本遺失者申請，且無法郵遞領取。",
-                content: `<ul class="step-list"><li>注意：申請後原正本失效。</li><li>時程：約 3 個工作天。</li></ul>`
-            }
+                items: ["申請書", "護照影本(核對英文姓名)", "工本費 (10元/份)"],
+                restriction: "須附護照影本。作業時間約3個工作天。",
+                content: `<ul class="step-list"><li>時程：英文相關文件需約 3 個工作天。</li></ul>`
+            },
+            english_suspension_cert: {
+                title: "英文休學證明書",
+                isMachine: false,
+                items: ["申請書", "護照影本(核對英文姓名)", "限休學生申請", "工本費 (10元/份)"],
+                restriction: "須附護照影本。作業時間約3~7個工作天。",
+                content: `<ul class="step-list"><li>時程：英文相關文件需約 3 個工作天。</li></ul>`
+            },
+            english_completion_cert: {
+                title: "英文修業證明書(含英文歷年成績單)",
+                isMachine: false,
+                items: ["申請書", "護照影本(核對英文姓名)", "限退學生申請", "工本費 (10元/份)"],
+                restriction: "須附護照影本。作業時間約3~7個工作天。",
+                content: `<ul class="step-list"><li>時程：英文相關文件需約 3 個工作天。</li></ul>`
+            },
+            english_degree_cert: {
+                title: "英文學位證明書",
+                isMachine: false,
+                items: ["申請書", "護照影本(核對英文姓名)", "限退學生申請", "工本費 (100元/份)"],
+                restriction: "須附護照影本。作業時間約3個工作天。",
+                content: `<ul class="step-list"><li>時程：英文相關文件需約 3 個工作天。</li></ul>`
+            },
+            english_grad_cert: {
+                title: "英文畢業證明書(92年前)",
+                isMachine: false,
+                items: ["申請書", "護照影本(核對英文姓名)", "限92年前畢業學生申請", "工本費 (10元/份)"],
+                restriction: "須附護照影本。作業時間約3~7個工作天。",
+                content: `<ul class="step-list"><li>時程：英文相關文件需約 3 個工作天。</li></ul>`
+            },
+            
             // 其餘文件可依此格式類推...
         };
 
