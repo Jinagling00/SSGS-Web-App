@@ -171,17 +171,17 @@
 
         function calculatePreciseFees() {
             let price = 0, weight = 0;
-            // 計算主體文件
+            // 1. 計算主體文件金額與重量
             document.querySelectorAll('.calc-input').forEach(i => {
                 const count = Number(i.value) || 0;
                 price += count * Number(i.dataset.price);
                 weight += count * Number(i.dataset.weight);
             });
-            // 加入彌封與信封重量
+            // 2. 加入彌封與信封重量
             weight += Number(document.getElementById('envelope-type').value);
             weight += (Number(document.getElementById('seal-count').value) || 0) * 10;
 
-            // 郵資級距邏輯 (2025 級距)
+            // 3. 郵資級距邏輯 (2025 中華郵政掛號資費)
             let baseFee = 0;
             if (weight > 0) {
                 if (weight <= 20) baseFee = 28;
@@ -195,12 +195,20 @@
             const isExpress = document.getElementById('mail-method').value === 'express-reg';
             const finalStamp = (baseFee > 0) ? baseFee + (isExpress ? 7 : 0) : 0;
 
-            // 💡 修正：更新畫面，並確保 ID 存在
+            // 4. 更新畫面 (修正變數讀取錯誤)
             document.getElementById('money-order-total').textContent = isNaN(price) ? 0 : price;
             document.getElementById('stamp-total').textContent = isNaN(finalStamp) ? 0 : finalStamp;
+            
             const weightDisplay = document.getElementById('total-weight');
             if (weightDisplay) {
-                weightDisplay.textContent = isNaN(total-weight) ? 0 : total-weight;
+                // 💡 修正：這裡應該使用變數名稱 'weight'，不可寫成 'total-weight'
+                weightDisplay.textContent = isNaN(weight) ? 0 : weight;
+            }
+
+            // 5. 🚀 雲端同步：點擊計算時自動傳送數據
+            if (typeof trackClick === 'function') {
+                const mailNote = isExpress ? "限時掛號" : "普通掛號";
+                trackClick('btn_calc', `${mailNote} / 總額:${price} / 郵資:${finalStamp} / 重量:${weight}g`);
             }
         }
 
