@@ -7,23 +7,17 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/SSGS-Web-App/styles.css"> 
+    <link rel="stylesheet" href="styles.css"> 
     <style>
-        /* 新增：搜尋框樣式 */
         .search-container { margin: 20px 0; position: relative; }
         #docSearch { width: 100%; padding: 12px 20px; border: 2px solid var(--primary-color); border-radius: 25px; font-size: 1em; outline: none; box-sizing: border-box; }
-        
-        /* 新增：檢查清單樣式 */
         .checklist-box { background: #f0f4f8; padding: 15px; border-radius: 8px; margin-top: 15px; border: 1px solid #d1d9e0; }
         .checklist-item { display: flex; align-items: center; margin-bottom: 8px; cursor: pointer; text-align: left; }
         .checklist-item input { margin-right: 10px; width: 18px; height: 18px; cursor: pointer; }
-
-        /* 新增：繳費機位置提示樣式 */
         .location-box { background-color: #e8f5e9; border: 1px solid #2e7d32; padding: 12px; border-radius: 8px; margin-top: 10px; text-align: left; }
         .location-title { color: #2e7d32; font-weight: bold; margin-bottom: 5px; display: block; }
         .machine-red { color: #d32f2f; font-weight: bold; }
         .machine-yellow { color: #fbc02d; font-weight: bold; text-shadow: 0.5px 0.5px 1px #000; }
-
         .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0, 0, 0, 0.6); }
         .modal-content { background-color: #fefefe; margin: 5% auto; padding: 30px; border: 1px solid #888; width: 90%; max-width: 650px; border-radius: 10px; position: relative; }
         .close-btn { color: #aaa; float: right; font-size: 28px; font-weight: bold; cursor: pointer; }
@@ -32,6 +26,8 @@
     </style>
 </head>
 <body>
+    <script src="app.js"></script>
+
     <div class="container"> 
         <h1>📄 流程 A：申請文件查詢</h1>
         
@@ -40,9 +36,10 @@
         </div>
         <p>申請文件請填寫各項證明申請書。</p>
         <p>委託他人辦理者請填寫委託書，並貼上身分證正反面影本，受託人攜帶自己身分證正本供核對身分。</p>
+        
         <div style="margin-bottom: 20px; display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;">
-            <a href="/SSGS-Web-App/forms/國立臺中科技大學日間部註冊組各項證明申請書.pdf" download class="option-button" style="background-color: #e0f2ff; color: #00478F; border: 1px solid #00478F; display: inline-block; width: auto; padding: 10px 20px;">📥 下載《各項證明申請書》</a>
-            <a href="/SSGS-Web-App/forms/國立臺中科技大學委託書.pdf" download class="option-button" style="background-color: #e0f2ff; color: #00478F; border: 1px solid #00478F; display: inline-block; width: auto; padding: 10px 20px;">📥 下載《委託書》</a>
+            <a href="forms/國立臺中科技大學日間部註冊組各項證明申請書.pdf" download class="option-button" style="background-color: #e0f2ff; color: #00478F; border: 1px solid #00478F; display: inline-block; width: auto; padding: 10px 20px;" onclick="trackClick('btn_download', '下載申請書')">📥 下載《各項證明申請書》</a>
+            <a href="forms/國立臺中科技大學委託書.pdf" download class="option-button" style="background-color: #e0f2ff; color: #00478F; border: 1px solid #00478F; display: inline-block; width: auto; padding: 10px 20px;" onclick="trackClick('btn_download', '下載委託書')">📥 下載《委託書》</a>
         </div>
 
         <div id="doc-container">
@@ -69,25 +66,29 @@
 
         <h2 class="document-group-title">⚖️ 郵寄費用精算工具</h2>
         <div class="result-box" style="border: 2px solid var(--primary-color); background-color: #fff; padding: 25px; margin-top: 10px;">
-            <div id="calculator-form" style="text-align: left; font-size: 0.95em;" onclick="trackClick('btn_calc')">
+            <div id="calculator-form" style="text-align: left; font-size: 0.95em;">
                 <div class="calc-row"><label>中文成績單、中/英文在學證明、休學證明、學位證明書影本 ($10, 5g):</label><input type="number" class="calc-input" data-price="10" data-weight="5" min="0" value="0"></div>
                 <div class="calc-row"><label>中/英文修業證明書 ($10, 15g):</label><input type="number" class="calc-input" data-price="10" data-weight="15" min="0" value="0"></div>
                 <div class="calc-row"><label>英文學位證明書 ($100, 15g):</label><input type="number" class="calc-input" data-price="100" data-weight="15" min="0" value="0"></div>
                 <div class="calc-row"><label>英文成績單 ($10, 25g):</label><input type="number" class="calc-input" data-price="10" data-weight="25" min="0" value="0"></div>
+                
                 <div style="margin-top: 15px; border-top: 1px solid #eee; padding-top: 15px;">
                     <div class="calc-row"><label>回郵信封:</label><select id="envelope-type" style="padding: 5px;"><option value="20">大信封(20g)</option><option value="8">小信封(8g)</option></select></div>
-                    <div class="calc-row"><label>需要彌封 (10g/個):</label><input type="number" id="seal-count" min="0" value="0" class="calc-input"></div>
+                    <div class="calc-row"><label>需要彌封 (10g/個):</label><input type="number" id="seal-count" min="0" value="0" class="calc-input-extra"></div>
                     <div class="calc-row"><label>郵寄方式:</label><select id="mail-method" style="padding: 5px;"><option value="registered">掛號</option><option value="express-reg">限時掛號 (+7元)</option></select></div>
                 </div>
-                <div class="fee-display-container" style="display: flex; gap: 15px; margin-top: 20px;">
-                    <div style="flex: 1; background: #fffde7; padding: 15px; border-radius: 8px; text-align: center;">💰 匯票金額：<span id="money-order-total">0</span> 元</div>
-                    <div style="flex: 1; background: #e0f2ff; padding: 15px; border-radius: 8px; text-align: center;">✉️ 郵資：<span id="stamp-total">0</span> 元</div>
+
+                <div class="fee-display-container" style="display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap;">
+                    <div style="flex: 1; min-width: 120px; background: #fffde7; padding: 15px; border-radius: 8px; text-align: center;">💰 匯票金額：<span id="money-order-total">0</span> 元</div>
+                    <div style="flex: 1; min-width: 120px; background: #e0f2ff; padding: 15px; border-radius: 8px; text-align: center;">✉️ 郵資：<span id="stamp-total">0</span> 元</div>
                     <div style="flex: 1; min-width: 120px; background: #f1f8e9; padding: 15px; border-radius: 8px; text-align: center;">⚖️ 總重量：<span id="total-weight">0</span> g</div>
                 </div>
+                
+                <button onclick="calculatePreciseFees(); trackClick('btn_calc', '執行精算工具')" class="decision-button" style="margin-top:20px; width:100%;">重新計算資費</button>
             </div>
         </div>
         
-        <a href="/SSGS-Web-App/service_menu.html" class="option-button back-to-home-btn">&larr; 返回服務選單</a>
+        <a href="service_menu.html" class="option-button back-to-home-btn">&larr; 返回服務選單</a>
     </div>
 
     <div id="documentModal" class="modal">
@@ -95,12 +96,10 @@
             <span class="close-btn" onclick="closeModal()">&times;</span>
             <h2 id="modalTitle" style="color: var(--primary-color); margin-top: 0;"></h2>
             <div id="modalBody"></div>
-            
             <div class="checklist-box">
                 <span class="location-title">✅ 申請前必備清單 (請勾選確認)</span>
                 <div id="checklistContent"></div>
             </div>
-
             <div id="machineLocationBox" class="location-box" style="display:none;">
                 <span class="location-title">📍 自動繳費機位置指南：</span>
                 <ul style="margin: 0; padding-left: 20px; font-size: 0.9em;">
@@ -108,8 +107,7 @@
                     <li><span class="machine-yellow">黃色繳費機：</span>資訊樓 1F 事務組對面電梯旁。</li>
                 </ul>
             </div>
-
-            <div class="mail-rule-box">
+            <div class="mail-rule-box" style="margin-top:15px; border-top:1px solid #eee; padding-top:10px;">
                 <h4>✉️ 郵寄申請共通規則</h4>
                 <ul style="padding-left: 20px; font-size: 0.95em;">
                     <li>匯票抬頭：國立臺中科技大學。</li>
@@ -121,157 +119,69 @@
     </div>
 
     <script>
-        // 擴充資料庫：加入 isMachine 與必備 items
+        // 資料庫定義
         const documentData = {
-            chinese_transcript: {
-                title: "中文歷年成績單申請",
-                isMachine: true,
-                items: ["工本費 (10元/份)", "推甄用、休退學成績單需繳費收據"],
-                restriction: "無特殊郵寄限制。在校生排名需於繳費機選擇「推甄用成績單」。",
-                content: `<ul class="step-list"><li>取件方式：利用校內自動繳費機繳費後立刻取件。</li><li>休退學生、推甄用：請持繳費收據至註冊組領取。</li></ul>`
-            },
-            in_school: {
-                title: "中文在學證明書申請",
-                isMachine: true,
-                items: ["已完成繳費並銷帳之記錄", "工本費 (10元/份)"],
-                restriction: "無法郵寄取件，請至校內機台辦理。",
-                content: `<ul class="step-list"><li>條件：學雜費已銷帳方可申請；未銷帳需至註冊組人工列印。</li><li>取件方式：利用校內自動繳費機立即列印。</li></ul>`
-            },
-            degree_copy: {
-                title: "學位畢業證書影本申請",
-                isMachine: false,
-                items: ["申請書", "學位/畢業證書正本", "工本費 (10元/份)"],
-                restriction: "無特殊郵寄限制。正本當場影印後自行帶回。",
-                content: `<ul class="step-list"><li>條件：約半個工作天，早上11點前申請可當天15:30後取件。</li><li>取件方式：請持繳費收據至註冊組領取，或附回郵信封寄回。</li></ul>`
-            },
-            chinese_suspension_cert: {
-                title: "中文休學證明書",
-                isMachine: false,
-                items: ["限休學生申請", "申請書", "工本費 (10元/份)"],
-                restriction: "無特殊郵寄限制。",
-                content: `<ul class="step-list"><li>條件：約半個工作天，早上11點前申請可當天15:30後取件。</li><li>取件方式：請持繳費收據至註冊組領取，或附回郵信封寄回。</li></ul>`
-            },
-            chinese_completion_cert: {
-                title: "中文修學證明書(含歷年成績單)",
-                isMachine: false,
-                items: ["限退學生申請", "申請書", "工本費 (10元/份)"],
-                restriction: "無特殊郵寄限制。",
-                content: `<ul class="step-list"><li>條件：約半個工作天，早上11點前申請可當天15:30後取件。</li><li>取件方式：請持繳費收據至註冊組領取，或附回郵信封寄回。</li></ul>`
-            },
-            chinese_degree_cert: {
-                title: "補發中文學位證明書",
-                isMachine: false,
-                items: ["申請書",  "工本費 (100元/份)", "身分證"],
-                restriction: "限正本遺失者申請，且無法郵遞領取。",
-                content: `<ul class="step-list"><li>注意：申請後原正本失效。</li><li>時程：約 3 個工作天。</li></ul>`
-            },
-            english_transcript: {
-                title: "英文歷年成績單申請",
-                isMachine: false,
-                items: ["申請書", "護照影本(核對英文姓名)", "工本費 (10元/份)"],
-                restriction: "須附護照影本。作業時間約3~7個工作天。",
-                content: `<ul class="step-list"><li>時程：英文相關文件需約 3 個工作天。</li><li>彌封：若需彌封請於申請書備註。</li></ul>`
-            },
-            english_in_school: {
-                title: "英文在學證明書",
-                isMachine: false,
-                items: ["申請書", "護照影本(核對英文姓名)", "工本費 (10元/份)"],
-                restriction: "須附護照影本。作業時間約3個工作天。",
-                content: `<ul class="step-list"><li>時程：英文相關文件需約 3 個工作天。</li></ul>`
-            },
-            english_suspension_cert: {
-                title: "英文休學證明書",
-                isMachine: false,
-                items: ["申請書", "護照影本(核對英文姓名)", "限休學生申請", "工本費 (10元/份)"],
-                restriction: "須附護照影本。作業時間約3~7個工作天。",
-                content: `<ul class="step-list"><li>時程：英文相關文件需約 3 個工作天。</li></ul>`
-            },
-            english_completion_cert: {
-                title: "英文修業證明書(含英文歷年成績單)",
-                isMachine: false,
-                items: ["申請書", "護照影本(核對英文姓名)", "限退學生申請", "工本費 (10元/份)"],
-                restriction: "須附護照影本。作業時間約3~7個工作天。",
-                content: `<ul class="step-list"><li>時程：英文相關文件需約 3 個工作天。</li></ul>`
-            },
-            english_degree_cert: {
-                title: "英文學位證明書",
-                isMachine: false,
-                items: ["申請書", "護照影本(核對英文姓名)", "限退學生申請", "工本費 (100元/份)"],
-                restriction: "須附護照影本。作業時間約3個工作天。",
-                content: `<ul class="step-list"><li>時程：英文相關文件需約 3 個工作天。</li></ul>`
-            },
-            english_grad_cert: {
-                title: "英文畢業證明書(92年前)",
-                isMachine: false,
-                items: ["申請書", "護照影本(核對英文姓名)", "限92年前畢業學生申請", "工本費 (10元/份)"],
-                restriction: "須附護照影本。作業時間約3~7個工作天。",
-                content: `<ul class="step-list"><li>時程：英文相關文件需約 3 個工作天。</li></ul>`
-            },
-            
-            // 其餘文件可依此格式類推...
+            chinese_transcript: { title: "中文歷年成績單申請", isMachine: true, items: ["工本費 (10元/份)", "推甄用、休退學成績單需繳費收據"], restriction: "無特殊郵寄限制。在校生排名需於繳費機選擇「推甄用」。", content: `<ul class="step-list"><li>取件方式：利用機台繳費後立刻取件。</li><li>推甄用/休退學：持收據至註冊組領取。</li></ul>` },
+            in_school: { title: "中文在學證明書申請", isMachine: true, items: ["已完成繳費並銷帳記錄", "工本費 (10元/份)"], restriction: "無法郵寄，請至校內機台辦理。", content: `<ul class="step-list"><li>條件：學雜費已銷帳方可申請。</li><li>取件方式：機台立即列印。</li></ul>` },
+            degree_copy: { title: "學位畢業證書影本申請", isMachine: false, items: ["申請書", "學位證書正本", "工本費 (10元/份)"], restriction: "無特殊郵寄限制。", content: `<ul class="step-list"><li>取件：11點前申請可當天取件。</li></ul>` },
+            chinese_suspension_cert: { title: "中文休學證明書", isMachine: false, items: ["限休學生", "申請書", "工本費 (10元/份)"], restriction: "無限制。", content: `<ul class="step-list"><li>取件：可持收據領取或郵寄。</li></ul>` },
+            chinese_completion_cert: { title: "中文修業證明書", isMachine: false, items: ["限退學生", "申請書", "工本費 (10元/份)"], restriction: "無限制。", content: `<ul class="step-list"><li>含歷年成績單。</li></ul>` },
+            chinese_degree_cert: { title: "補發中文學位證明書", isMachine: false, items: ["申請書", "工本費 (100元/份)", "身分證"], restriction: "無法郵遞領取。", content: `<ul class="step-list"><li>時程：約 3 個工作天。</li></ul>` },
+            english_transcript: { title: "英文歷年成績單申請", isMachine: false, items: ["申請書", "護照影本", "工本費 (10元/份)"], restriction: "須附護照影本。", content: `<ul class="step-list"><li>時程：約 3-7 個工作天。</li></ul>` },
+            english_in_school: { title: "英文在學證明書", isMachine: false, items: ["申請書", "護照影本", "工本費 (10元/份)"], restriction: "須附護照影本。", content: `<ul class="step-list"><li>時程：約 3 個工作天。</li></ul>` },
+            english_suspension_cert: { title: "英文休學證明書", isMachine: false, items: ["申請書", "護照影本", "工本費 (10元/份)"], restriction: "須附護照影本。", content: `<ul class="step-list"><li>時程：約 3 個工作天。</li></ul>` },
+            english_completion_cert: { title: "英文修業證明書", isMachine: false, items: ["申請書", "護照影本", "工本費 (10元/份)"], restriction: "須附護照影本。", content: `<ul class="step-list"><li>含英文成績單。</li></ul>` },
+            english_degree_cert: { title: "英文學位證明書", isMachine: false, items: ["申請書", "護照影本", "工本費 (100元/份)"], restriction: "須附護照影本。", content: `<ul class="step-list"><li>時程：約 3 個工作天。</li></ul>` },
+            english_grad_cert: { title: "英文畢業證明書(92年前)", isMachine: false, items: ["申請書", "護照影本", "工本費 (10元/份)"], restriction: "須附護照影本。", content: `<ul class="step-list"><li>時程：約 3-7 個工作天。</li></ul>` }
         };
 
-        // 1. 搜尋功能邏輯
         function filterDocuments() {
             const searchTerm = document.getElementById('docSearch').value.toLowerCase();
-            const cards = document.querySelectorAll('.document-card');
-            
-            cards.forEach(card => {
+            document.querySelectorAll('.document-card').forEach(card => {
                 const title = card.getAttribute('data-title').toLowerCase();
-                if (title.includes(searchTerm)) {
-                    card.style.display = "";
-                } else {
-                    card.style.display = "none";
-                }
+                card.style.display = title.includes(searchTerm) ? "" : "none";
             });
         }
 
-        // 2. 彈窗顯示邏輯
         function showDocumentDetail(key) {
             const data = documentData[key];
             if (!data) return;
-            
             document.getElementById('modalTitle').textContent = data.title;
             document.getElementById('modalBody').innerHTML = data.content;
             document.getElementById('mailRestriction').textContent = data.restriction;
-
-            // 顯示/隱藏繳費機位置
             document.getElementById('machineLocationBox').style.display = data.isMachine ? "block" : "none";
-
-            // 生成檢查清單
             let checklistHtml = '';
             data.items.forEach(item => {
-                checklistHtml += `
-                    <label class="checklist-item">
-                        <input type="checkbox"> <span>${item}</span>
-                    </label>
-                `;
+                checklistHtml += `<label class="checklist-item"><input type="checkbox"> <span>${item}</span></label>`;
             });
             document.getElementById('checklistContent').innerHTML = checklistHtml;
-            
             document.getElementById('documentModal').style.display = 'block';
+            trackClick('btn_apply', `查詢文件：${data.title}`);
         }
 
         function closeModal() { document.getElementById('documentModal').style.display = 'none'; }
         window.onclick = function(event) { if (event.target == document.getElementById('documentModal')) closeModal(); }
 
-        // 3. 計算機邏輯 (修正後的版本)
-        document.addEventListener('DOMContentLoaded', function() {
-            const inputs = document.querySelectorAll('.calc-input, #envelope-type, #seal-count, #mail-method');
+        // 💡 修正後的計算機邏輯
+        document.addEventListener('DOMContentLoaded', () => {
+            const inputs = document.querySelectorAll('.calc-input, .calc-input-extra, #envelope-type, #mail-method');
             inputs.forEach(el => el.addEventListener('input', calculatePreciseFees));
             calculatePreciseFees();
         });
 
         function calculatePreciseFees() {
             let price = 0, weight = 0;
+            // 計算主體文件
             document.querySelectorAll('.calc-input').forEach(i => {
                 const count = Number(i.value) || 0;
-                price += count * Number(i.getAttribute('data-price'));
-                weight += count * Number(i.getAttribute('data-weight'));
+                price += count * Number(i.dataset.price);
+                weight += count * Number(i.dataset.weight);
             });
+            // 加入彌封與信封重量
             weight += Number(document.getElementById('envelope-type').value);
             weight += (Number(document.getElementById('seal-count').value) || 0) * 10;
 
+            // 郵資級距邏輯 (2025 級距)
             let baseFee = 0;
             if (weight > 0) {
                 if (weight <= 20) baseFee = 28;
@@ -285,27 +195,21 @@
             const isExpress = document.getElementById('mail-method').value === 'express-reg';
             const finalStamp = (baseFee > 0) ? baseFee + (isExpress ? 7 : 0) : 0;
 
+            // 💡 修正：更新畫面，並確保 ID 存在
             document.getElementById('money-order-total').textContent = isNaN(price) ? 0 : price;
             document.getElementById('stamp-total').textContent = isNaN(finalStamp) ? 0 : finalStamp;
             const weightDisplay = document.getElementById('total-weight');
             if (weightDisplay) {
                 weightDisplay.textContent = isNaN(weight) ? 0 : weight;
             }
-
-            // 備註內包含：郵寄方式、總金額與郵資
-            const mailNote = isExpress ? "限時掛號" : "普通掛號";
-            if (typeof trackClick === 'function') {
-                trackClick('btn_calc', `${mailNote} / 總額:${price} / 郵資:${finalStamp}`);
-            }
         }
+
+        // Service Worker 註冊
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('service-worker.js')
-                    .then(reg => console.log('SSGS App 啟動成功！'))
-                    .catch(err => console.log('啟動失敗：', err));
+                navigator.serviceWorker.register('service-worker.js');
             });
         }
     </script>
-
 </body>
 </html>
