@@ -84,9 +84,12 @@
                     <div style="flex: 1; min-width: 120px; background: #f1f8e9; padding: 15px; border-radius: 8px; text-align: center;">⚖️ 總重量：<span id="weight">0</span> g</div>
                 </div>
                 
-                <div style="margin-top: 20px;">
-                    <button onclick="handleCalcAndSync()" class="decision-button" style="width: 100%; background-color: #00478F;">
+                <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 20px;">
+                    <button onclick="handleCalcAndSync()" class="decision-button" style="width: 100%;">
                         ✅ 確認計算結果
+                    </button>
+                    <button onclick="calculatePreciseFees()" class="decision-button" style="width: 100%;">
+                        重新計算資費
                     </button>
                 </div>
                 
