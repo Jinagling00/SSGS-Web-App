@@ -177,3 +177,29 @@ function getWithdrawalApprovals(studentLevel, requiresParentConsent, gender, isS
 
     return requiredApprovals;
 }
+// 初始化計數器
+if (!localStorage.getItem('usage_stats')) {
+    localStorage.setItem('usage_stats', JSON.stringify({
+        'btn_apply': 0, // 申請證明
+        'btn_calc': 0,   // 資費精算
+        'btn_withdrawal': 0, // 休退學
+        'btn_iccard': 0, // 學生證
+        'btn_namechange': 0, // 更名
+        'btn_download': 0 // 文件下載   
+    }));
+}
+
+// 紀錄點擊的函式
+function trackClick(featureId) {
+    let stats = JSON.parse(localStorage.getItem('usage_stats'));
+    if (stats.hasOwnProperty(featureId)) {
+        stats[featureId] += 1;
+        localStorage.setItem('usage_stats', JSON.stringify(stats));
+        console.log(`[數據紀錄] ${featureId} 使用次數：${stats[featureId]}`);
+    }
+}
+
+// 顯示統計結果 (可供您在測試時查看)
+function showStats() {
+    console.table(JSON.parse(localStorage.getItem('usage_stats')));
+}
